@@ -4,22 +4,19 @@
   "short_name": "test1",
   "version": "1.0.0",
   "description": "Generated with @larscom/ng-chrome-extension",
-  "permissions":[
+  "permissions": [
     "tabs",
     "storage",
     "alarms",
     "scripting",
     "activeTab",
     "identity"
-],
-"oauth2": {
-  "client_id": "<client ID>",
-  "scopes": ["openid", "email", "profile"]
-},
-"host_permissions": [
-  "http://*/*",
-  "https://*/*"
-],
+  ],
+  "oauth2": {
+    "client_id": "131178090127-drjcbgj42p02s6b9s8n3ssfumoik3jmp.apps.googleusercontent.com",
+    "scopes": ["openid", "email", "profile"]
+  },
+  "host_permissions": ["http://*/*", "https://*/*"],
   "action": {
     "default_popup": "index.html?#/popup",
     "default_title": "Angular Chrome Extension"
@@ -30,29 +27,20 @@
   },
   "content_scripts": [
     {
-      "js": [
-        "./chrome/src/contentPage.ts"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "js": ["./chrome/src/contentPage.ts"],
+      "matches": ["<all_urls>"]
     }
   ],
   "commands": {
     "toggle-feature": {
-        "suggested_key": {
-            "default": "Ctrl+Shift+0",
-            "mac": "Command+Shift+0"
-        },
-        "description": "Toggle the helpcenter screen"
-        
+      "suggested_key": {
+        "default": "Ctrl+Shift+0",
+        "mac": "Command+Shift+0"
+      },
+      "description": "Toggle the helpcenter screen"
     }
   },
-  "background":{
-    "service_worker":"./chrome/src/background.js"
-},
-  
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
+  "background": {
+    "service_worker": "./chrome/src/background.js"
   }
 }

@@ -6,14 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['options.component.scss']
 })
 export class OptionsComponent implements OnInit {
-
+  userInfo: string | null = null;
   constructor(){
 
   }
-  ngOnInit(): void {
-    // this.supabase.auth.signInWithOAuth({
-    //   provider: 'google',
-    // })
-    
+  ngOnInit() {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.message === 'userInfo') {
+        this.userInfo = request.userInfo;
+      }
+    });
+  }
+
+  signInWithGoogle() {
+    chrome.runtime.sendMessage({ message: 'signInWithGoogle' });
   }
 }

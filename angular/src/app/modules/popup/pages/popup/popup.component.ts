@@ -10,6 +10,7 @@ import { TAB_ID } from '../../../../providers/tab-id.provider';
 })
 export class PopupComponent {
   message: string;
+  userInfo: string | null = null;
 
   constructor(@Inject(TAB_ID) readonly tabId: number) {}
 
@@ -38,4 +39,18 @@ export class PopupComponent {
       this.onClick();
     }
   }
+
+  ngOnInit() {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.message === 'userInfo') {
+        this.userInfo = request.userInfo;
+      }
+    });
+  }
+
+  signInWithGoogle() {
+    chrome.runtime.sendMessage({ message: 'signInWithGoogle' });
+  }
+
+ 
 }
