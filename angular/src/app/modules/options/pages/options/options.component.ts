@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SupabaseClient } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-options',
@@ -8,7 +7,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 })
 export class OptionsComponent implements OnInit {
 
-  constructor(private supabase:SupabaseClient){
+  constructor(){
 
   }
   ngOnInit(): void {
