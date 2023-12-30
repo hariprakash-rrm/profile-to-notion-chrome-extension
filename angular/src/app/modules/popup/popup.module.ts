@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { PopupComponent } from './pages/popup/popup.component';
 import { PopupRoutingModule } from './popup-routing.module';
 
+
 @NgModule({
   declarations: [PopupComponent],
-  imports: [CommonModule, PopupRoutingModule]
+  imports: [CommonModule, PopupRoutingModule],
+  providers:[]
 })
 export class PopupModule {}

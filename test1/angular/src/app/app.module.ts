@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { SupabaseClient } from '@supabase/supabase-js';
+
 
 @NgModule({
   declarations: [AppComponent, ],
