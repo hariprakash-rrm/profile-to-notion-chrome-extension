@@ -6,7 +6,6 @@ import { PopupRoutingModule } from './popup-routing.module';
 
 @NgModule({
   declarations: [PopupComponent],
-  imports: [CommonModule, PopupRoutingModule],
-  providers:[]
+  imports: [CommonModule, PopupRoutingModule]
 })
 export class PopupModule {}
