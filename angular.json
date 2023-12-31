@@ -30,7 +30,7 @@
               "angular/src/favicon.ico",
               "angular/src/assets",
               "angular/src/manifest.json",
-              "angular/src/chrome/src/contentPage.ts",
+              "angular/src/chrome/src/contentPage.js",
               "angular/src/chrome/src/background.js"
                           ],
             "styles": [
