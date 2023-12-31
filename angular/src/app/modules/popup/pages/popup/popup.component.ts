@@ -44,13 +44,9 @@ export class PopupComponent {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.message === 'userInfo') {
         this.userInfo = request.userInfo;
+        console.log('user = = == = ',this.userInfo)
       }
     });
   }
-
-  signInWithGoogle() {
-    chrome.runtime.sendMessage({ message: 'signInWithGoogle' });
-  }
-
  
 }

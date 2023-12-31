@@ -39,6 +39,7 @@
       },
       "description": "Toggle the helpcenter screen"
     }
+  
   },
   "background": {
     "service_worker": "./chrome/src/background.js"

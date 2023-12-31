@@ -7,7 +7,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       const handleContactInfo = () => {
         return new Promise((resolve, reject) => {
-          const contactInfoLink = document.querySelector("#top-card-text-details-contact-info");
+          const contactInfoLink = document.querySelector(
+            "#top-card-text-details-contact-info"
+          );
 
           if (!contactInfoLink) {
             reject(new Error("Contact info link not found."));
@@ -24,7 +26,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (currentUrl.endsWith(targetSuffix)) {
               clearInterval(intervalId);
               const userData = collectHtmlData();
-              console.log("test gets test ", userData);
               resolve(userData);
             }
 
@@ -32,7 +33,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
             if (intervalCount >= maxIntervals) {
               clearInterval(intervalId);
-              reject(new Error("Timeout: URL change did not occur within 10 seconds."));
+              reject(
+                new Error(
+                  "Timeout: URL change did not occur within 10 seconds."
+                )
+              );
             }
           }, 1000);
 
@@ -41,14 +46,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
 
       const collectHtmlData = () => {
-        const allData = document.getElementsByClassName("pv-contact-info__contact-type");
+        const allData = document.getElementsByClassName(
+          "pv-contact-info__contact-type"
+        );
         const contactInfo = {};
 
         for (let i = 0; i < allData.length; i++) {
-          const headerElement = allData[i].querySelector('.pv-contact-info__header');
-          const headerText = headerElement ? headerElement.textContent.trim() : 'Unknown Header';
+          const headerElement = allData[i].querySelector(
+            ".pv-contact-info__header"
+          );
+          const headerText = headerElement
+            ? headerElement.textContent.trim()
+            : "Unknown Header";
 
-          const ciContainerElements = allData[i].getElementsByClassName('pv-contact-info__ci-container');
+          const ciContainerElements = allData[i].getElementsByClassName(
+            "pv-contact-info__ci-container"
+          );
           const ciValues = [];
 
           for (let j = 0; j < ciContainerElements.length; j++) {
@@ -58,7 +71,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           contactInfo[headerText] = ciValues;
         }
 
-        console.log(contactInfo);
         return contactInfo;
       };
 
@@ -68,7 +80,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("User data:", userData);
 
       // Signal that processing is complete
-      resolve( userData );
+      resolve(userData);
     } catch (error) {
       console.error(error.message || "Something went wrong.");
 
@@ -76,9 +88,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       reject({ success: false, error: error.message });
     }
   })
-  .then(response => sendResponse(response))
-  .catch(error => sendResponse(error));
+    .then((response) => sendResponse(response))
+    .catch((error) => sendResponse(error));
 
   // Important: Return true to indicate that you will respond asynchronously
   return true;
 });
+
+
+// background.js
+
+
