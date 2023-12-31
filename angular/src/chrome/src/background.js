@@ -24,3 +24,77 @@ chrome.commands.onCommand.addListener(function (command) {
     }
 });
 
+// background.js
+
+// Function to initiate OAuth2 authentication
+function initiateOAuth2() {
+    const manifest = chrome.runtime.getManifest();
+    const url = new URL('https://accounts.google.com/o/oauth2/auth');
+    url.searchParams.set('client_id', manifest.oauth2.client_id);
+    url.searchParams.set('response_type', 'id_token');
+    url.searchParams.set('access_type', 'offline');
+    url.searchParams.set('redirect_uri', `https://${chrome.runtime.id}.chromiumapp.org`);
+    url.searchParams.set('scope', manifest.oauth2.scopes.join(' '));
+  
+    chrome.identity.launchWebAuthFlow(
+      {
+        url: url.href,
+        interactive: true,
+      },
+      async (redirectedTo) => {
+        if (chrome.runtime.lastError) {
+          console.error('Authentication error:', chrome.runtime.lastError);
+        } else {
+         
+          const url = new URL(redirectedTo);
+          console.log('URL after redirection:', url.href);
+  
+          // const params = new URLSearchParams(url.hash);
+          const hash = url.hash.substring(1); // Remove the '#' character
+          const params = new URLSearchParams(hash);
+          console.log('Params:', params);
+
+
+          // Extract the value of the id_token parameter
+          // const idToken = params.get('id_token');
+
+          const idToken = params.get('id_token');
+          console.log('ID Token:', idToken);
+          const userInfo = await getUserInfo(params.get('id_token'));
+          console.log('infooo',userInfo)
+          // const { data, error } = await supabase.auth.signInWithIdToken({
+          //   provider: 'google',
+          //   token: params.get('id_token'),
+          // })
+          console.log(data,error)
+          sendMessageToAngularApp('userInfo', userInfo);
+        }
+      }
+    );
+  }
+  
+  // Function to get user information from the ID token
+  async function getUserInfo(idToken) {
+    // In a real-world scenario, you would send the ID token to your server for verification.
+    // For simplicity, let's just decode the ID token here.
+    const decodedToken = JSON.parse(atob(idToken.split('.')[1]));
+    return decodedToken;
+  }
+  
+  // Function to send messages to the Angular app
+  function sendMessageToAngularApp(message, data) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const activeTab = tabs[0];
+      if (activeTab) {
+        chrome.tabs.sendMessage(activeTab.id, { message, data });
+      }
+    });
+  }
+  
+  // Listen for messages from the Angular app
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'signInWithGoogle') {
+      initiateOAuth2();
+    }
+  });
+  
