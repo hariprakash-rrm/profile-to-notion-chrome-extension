@@ -13,7 +13,7 @@
     "identity"
   ],
   "oauth2": {
-    "client_id": "131178090127-pn3ruamg64gknnvu3bmfr9q15alp6co3.apps.googleusercontent.com",
+    "client_id": "131178090127-1ve3a1fakntna7fh0vsf9f0rcjku58oi.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
   },
   "host_permissions": ["https://www.linkedin.com/*"],

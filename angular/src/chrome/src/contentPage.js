@@ -4,6 +4,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (!request) {
         throw new Error("Request is empty.");
       }
+      if (!window.location.href.startsWith("https://www.linkedin.com")) {
+        reject(new error("Only works on linkedin"));
+      }
 
       const handleContactInfo = () => {
         return new Promise((resolve, reject) => {
@@ -13,7 +16,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
           if (!contactInfoLink) {
             reject(new Error("Contact info link not found."));
-            return;
+            
           }
 
           const targetSuffix = "/overlay/contact-info/";
@@ -95,7 +98,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
-
 // background.js
-
-

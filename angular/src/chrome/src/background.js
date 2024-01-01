@@ -1,4 +1,4 @@
-console.log("j");
+
 chrome.commands.onCommand.addListener(function (command) {
   if (command === "toggle-feature") {
     // Send a message to the background script

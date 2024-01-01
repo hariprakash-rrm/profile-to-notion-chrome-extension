@@ -9,24 +9,35 @@ import { TAB_ID } from '../../../../providers/tab-id.provider';
   styleUrls: ['popup.component.scss']
 })
 export class PopupComponent {
-  message: string;
+  message: any;
   userInfo: string | null = null;
 
   constructor(@Inject(TAB_ID) readonly tabId: number) {}
 
   async onClick(): Promise<void> {
-    this.message = await bindCallback<any, any>(chrome.tabs.sendMessage.bind(this, this.tabId, 'request'))()
-      .pipe(
-        map(msg =>
-          chrome.runtime.lastError
-            ? 'The current page is protected by the browser, goto: https://www.google.nl and try again.'
-            : msg
+    try {
+      this.message = await bindCallback<any, any>(chrome.tabs.sendMessage.bind(this, this.tabId, 'request'))()
+        .pipe(
+          map(msg =>
+            chrome.runtime.lastError
+              ? msg
+              : msg
+          )
         )
-      )
-      .toPromise();
-
-      console.log(this.message,'messageee = = ')
+        .toPromise();
+        console.log('message = = = =',this.message)
+        if(this.message?.success==false){
+          this.message={
+            Error:["Go to people's linkedIn profile and try again"]
+          }
+        }
+    } catch (error) {
+      // Handle the error here
+      console.error("An error occurred:", error);
+      // You can also set a default value for this.message or perform any other necessary action
+    }
   }
+  
 
   getObjectEntries(): { key: string; value: string[] }[] {
     return this.message ? Object.entries(this.message).map(([key, value]) => ({ key, value: value as unknown as string[] })) : [];
