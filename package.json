@@ -29,14 +29,17 @@
     "@angular/router": "^16.1.6",
     "@supabase/supabase-js": "2.36.0",
     "@supabase/ui": "^0.36.5",
+    "autoprefixer": "^10.4.16",
+    "flowbite": "^2.2.1",
     "ngx-build-plus": "^16.0.0",
+    "postcss": "^8.4.32",
+    "postcss-import": "^15.1.0",
     "rxjs": "~7.8.1",
+    "tailwindcss": "^3.4.0",
     "tslib": "^2.6.0",
     "zone.js": "~0.13.1"
   },
-  "overrides": {
-    "@supabase/gotrue-js": "2.44.0"
-  },
+  
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.4",
     "@angular/cli": "~16.1.4",

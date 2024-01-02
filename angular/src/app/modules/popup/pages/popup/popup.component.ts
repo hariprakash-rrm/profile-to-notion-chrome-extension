@@ -2,6 +2,7 @@ import { Component, HostListener, Inject } from '@angular/core';
 import { bindCallback } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TAB_ID } from '../../../../providers/tab-id.provider';
+import { AuthService } from 'src/app/modules/auth.service';
 
 @Component({
   selector: 'app-popup',
@@ -10,9 +11,32 @@ import { TAB_ID } from '../../../../providers/tab-id.provider';
 })
 export class PopupComponent {
   message: any;
-  userInfo: string | null = null;
+  isLogin: boolean = false
+  isLoginObservable: any
+  loading:boolean =false
 
-  constructor(@Inject(TAB_ID) readonly tabId: number) {}
+  constructor(@Inject(TAB_ID) readonly tabId: number,private authService:AuthService) {}
+
+  async ngOnInit() {
+    this.loading =true
+    await this.authService.ngOnInit()
+    this.isLoginObservable = this.authService.isLogin$.subscribe(async(status: boolean) => {
+      this.isLogin =await status
+      this.loading=await false
+      console.log(status,this.loading,'status')
+    })
+  }
+
+
+  signInWithGoogle() {
+    this.loading =true
+    this.authService.signInWithGoogle()
+  }
+
+  signout() {
+    this.loading =true
+    this.authService.signout()
+  }
 
   async onClick(): Promise<void> {
     try {
@@ -51,13 +75,6 @@ export class PopupComponent {
     }
   }
 
-  ngOnInit() {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.message === 'userInfo') {
-        this.userInfo = request.userInfo;
-        console.log('user = = == = ',this.userInfo)
-      }
-    });
-  }
+
  
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent {
   constructor() {}
 
   ngOnInit() {
-    
+    initFlowbite()
 
 
   }
