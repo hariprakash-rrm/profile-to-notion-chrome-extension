@@ -14,29 +14,39 @@ export class OptionsComponent implements OnInit {
 
   isLogin: boolean = false
   isLoginObservable: any
-  loading:boolean =false
+  loading: boolean = false
   constructor(private authService: AuthService) {
 
   }
 
-  ngOnInit(): void {
-    this.loading =true
-    this.authService.ngOnInit()
-    this.isLoginObservable = this.authService.isLogin$.subscribe((status: boolean) => {
-      this.isLogin = status
-      this.loading=false
-    })
+  async ngOnInit(): Promise<void> {
+    this.loading = true;
+
+    // Assuming you have an async initialization method in your AuthService
+    await this.authService.ngOnInit();
+
+    this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
+      this.isLogin = await status;
+      this.loading = false;
+      console.log(status, this.loading, 'status');
+    });
   }
 
+  async signInWithGoogle(): Promise<void> {
+    this.loading = true;
 
-  signInWithGoogle() {
-    this.loading =true
-    this.authService.signInWithGoogle()
+    try {
+      const res: boolean = await this.authService.signInWithGoogle();
+      console.log(this.loading, res, 'signinwithgoogle');
+    } finally {
+      this.loading = false;
+    }
   }
 
-  signout() {
-    this.loading =true
-    this.authService.signout()
+  signout(): void {
+    this.loading = true;
+    this.authService.signout();
   }
+
 
 }

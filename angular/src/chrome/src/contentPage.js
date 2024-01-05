@@ -97,5 +97,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // Important: Return true to indicate that you will respond asynchronously
   return true;
 });
-
-// background.js

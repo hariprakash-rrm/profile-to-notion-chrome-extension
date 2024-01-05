@@ -22,27 +22,34 @@
       <button
         *ngIf="isLogin"
         (click)="signout()"
-        class="common-button text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+        class="common-button w-32 flex items-center gap-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
       >
-        Sign Out
         <div
           *ngIf="loading"
-          class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+          class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-red-600 rounded-full dark:text-red-500"
           role="status"
           aria-label="loading"
         >
           <span class="sr-only">Loading...</span>
         </div>
+        <img
+            *ngIf="!loading"
+            class="w-4 h-4 mr-2"
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            loading="lazy"
+            alt="google logo"
+          />
+        <span>Sign Out</span>
       </button>
 
       <div *ngIf="!isLogin">
         <button
           (click)="signInWithGoogle()"
-          class="common-button text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="common-button w-32 flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <div
             *ngIf="loading"
-            class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+            class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
             role="status"
             aria-label="loading"
           >
