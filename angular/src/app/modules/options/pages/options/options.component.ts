@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/modules/auth.service';
 import { environment } from 'src/environments/environment';
 
+import { TAB_ID } from 'src/app/providers/tab-id.provider';
 const supabase = createClient(environment.supabase.url, environment.supabase.key);
 
 @Component({
@@ -15,7 +16,7 @@ export class OptionsComponent implements OnInit {
   isLogin: boolean = false
   isLoginObservable: any
   loading: boolean = false
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, @Inject(TAB_ID) readonly tabId: number) {
 
   }
 
@@ -43,10 +44,11 @@ export class OptionsComponent implements OnInit {
     }
   }
 
-  signout(): void {
+  async signout() {
     this.loading = true;
     this.authService.signout();
   }
 
-
 }
+
+

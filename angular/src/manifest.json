@@ -16,7 +16,7 @@
     "client_id": "131178090127-1ve3a1fakntna7fh0vsf9f0rcjku58oi.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
   },
-  "host_permissions": ["https://www.linkedin.com/*"],
+  "host_permissions": ["https://www.linkedin.com/*", "https://api.notion.com/"],
   "action": {
     "default_popup": "index.html?#/popup",
     "default_title": "Angular Chrome Extension"
@@ -39,9 +39,9 @@
       },
       "description": "Toggle the helpcenter screen"
     }
-  
   },
   "background": {
-    "service_worker": "./chrome/src/background.js"
+    "service_worker": "./chrome/src/background.js",
+    "type": "module"
   }
 }

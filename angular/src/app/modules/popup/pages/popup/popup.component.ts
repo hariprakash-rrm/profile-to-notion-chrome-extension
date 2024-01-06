@@ -15,7 +15,7 @@ export class PopupComponent implements OnInit {
   isLoginObservable: any;
   loading: boolean = false;
 
-  constructor(@Inject(TAB_ID) readonly tabId: number, private authService: AuthService) {}
+  constructor(@Inject(TAB_ID) readonly tabId: number, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
     this.loading = true;
@@ -44,10 +44,12 @@ export class PopupComponent implements OnInit {
   signout(): void {
     this.loading = true;
     this.authService.signout();
+
+    this.createDbInNotion()
   }
 
   async onClick(): Promise<void> {
-    if(!this.isLogin){
+    if (!this.isLogin) {
       return
     }
     try {
@@ -85,5 +87,12 @@ export class PopupComponent implements OnInit {
     if (event.ctrlKey && event.altKey && event.key === 'c') {
       this.onClick();
     }
+  }
+
+  async createDbInNotion() {
+    console.log('triggered one')
+    chrome.runtime.sendMessage({ method: "get" }, (response) => {
+      console.log(response.toString(), "response");
+    });
   }
 }

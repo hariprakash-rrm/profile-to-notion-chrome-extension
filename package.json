@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^16.1.6",
     "@angular/platform-browser-dynamic": "^16.1.6",
     "@angular/router": "^16.1.6",
+    "@notionhq/client": "^2.2.14",
     "@supabase/supabase-js": "2.36.0",
     "@supabase/ui": "^0.36.5",
     "autoprefixer": "^10.4.16",
@@ -39,7 +40,6 @@
     "tslib": "^2.6.0",
     "zone.js": "~0.13.1"
   },
-  
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.4",
     "@angular/cli": "~16.1.4",
