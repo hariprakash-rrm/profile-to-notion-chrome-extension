@@ -49,35 +49,42 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
 
       const collectHtmlData = () => {
-        const allData = document.getElementsByClassName(
-          "pv-contact-info__contact-type"
-        );
+        const allData = document.getElementsByClassName("pv-contact-info__contact-type");
         const contactInfo = {};
-
-        for (let i = 0; i < allData.length; i++) {
-          const headerElement = allData[i].querySelector(
-            ".pv-contact-info__header"
-          );
-          const headerText = headerElement
-            ? headerElement.textContent.trim()
-            : "Unknown Header";
-
-          const ciContainerElements = allData[i].getElementsByClassName(
-            "pv-contact-info__ci-container"
-          );
-          const ciValues = [];
-
-          for (let j = 0; j < ciContainerElements.length; j++) {
-            ciValues.push(ciContainerElements[j].textContent.trim());
-          }
-
-          contactInfo[headerText] = ciValues;
+        
+        // Get the name element by its ID
+        const nameElement = document.getElementById('pv-contact-info');
+      
+        // Check if the name element exists
+        if (nameElement) {
+          const name = nameElement.innerText.trim();
+          contactInfo["Name"] = name;
         }
-
+      
+        for (let i = 0; i < allData.length; i++) {
+          const headerElement = allData[i].querySelector(".pv-contact-info__header");
+          const headerText = headerElement ? headerElement.textContent.trim() : "Unknown Header";
+      
+          if (i === 0) {
+            contactInfo['Your Profile'] = [headerText];
+          } else {
+            const ciContainerElements = allData[i].getElementsByClassName("pv-contact-info__ci-container");
+            const ciValues = [];
+      
+            for (let j = 0; j < ciContainerElements.length; j++) {
+              ciValues.push(ciContainerElements[j].textContent.trim());
+            }
+      
+            contactInfo[headerText] = ciValues;
+          }
+        }
+      
         return contactInfo;
       };
-
-      const preData = collectHtmlData();
+      
+      // Example usage
+      const collectedData = collectHtmlData();
+      console.log(collectedData);
 
       const userData = await handleContactInfo();
       console.log("User data:", userData);
