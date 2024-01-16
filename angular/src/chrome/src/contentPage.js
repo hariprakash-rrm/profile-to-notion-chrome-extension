@@ -1,3 +1,4 @@
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   new Promise(async (resolve, reject) => {
     try {
@@ -107,8 +108,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   })
     .then((response) => sendResponse(response))
     .catch((error) => sendResponse(error));
-  
-
+    
   // Important: Return true to indicate that you will respond asynchronously
   return true;
 });

@@ -31,6 +31,7 @@
     "@supabase/supabase-js": "2.36.0",
     "@supabase/ui": "^0.36.5",
     "autoprefixer": "^10.4.16",
+    "axios": "^1.6.5",
     "flowbite": "^2.2.1",
     "ngx-build-plus": "^16.0.0",
     "postcss": "^8.4.32",

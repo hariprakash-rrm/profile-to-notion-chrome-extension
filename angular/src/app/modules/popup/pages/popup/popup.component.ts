@@ -3,7 +3,7 @@ import { bindCallback } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TAB_ID } from '../../../../providers/tab-id.provider';
 import { AuthService } from 'src/app/modules/auth.service';
-
+import axios from 'axios';
 @Component({
   selector: 'app-popup',
   templateUrl: 'popup.component.html',
@@ -90,9 +90,14 @@ export class PopupComponent implements OnInit {
   }
 
   async createDbInNotion() {
-    console.log('triggered one')
-    chrome.runtime.sendMessage({ method: "get" }, (response) => {
-      console.log(response.toString(), "response");
+    let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token');
+          localData = JSON.parse(localData);
+    chrome.runtime.sendMessage({method: "getStatus",authData:localData}, function(response) {
+      console.log('Test = = = = = = ',JSON.parse(response));
+
     });
+    axios.post("http://localhost:3000/create", localData)
+    .then(async (resp) => ( await resp.data))
+    .catch((error) => console.error("Error during POST request:", error));
   }
 }

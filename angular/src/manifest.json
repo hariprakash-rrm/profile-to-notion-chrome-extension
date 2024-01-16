@@ -44,4 +44,5 @@
     "service_worker": "./chrome/src/background.js",
     "type": "module"
   }
+ 
 }

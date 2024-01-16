@@ -67,10 +67,10 @@ export class AuthService {
         if (data) {
           // Successful authentication
           let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token');
-          
+          localData = JSON.parse(localData);
   
           if (localData && localData.access_token) {
-            localData = JSON.parse(localData);
+           
             // Set login status and perform additional actions if needed
             this.setLoginStatus(true);
           }
