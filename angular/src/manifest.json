@@ -21,7 +21,7 @@
     "default_popup": "index.html?#/popup",
     "default_title": "Angular Chrome Extension"
   },
-  "options_page": "index.html?#/options",
+  "options_page": "index.html",
   "chrome_url_overrides": {
     "newtab": "index.html?#/tab"
   },

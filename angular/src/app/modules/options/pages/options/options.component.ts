@@ -16,6 +16,7 @@ export class OptionsComponent implements OnInit {
   isLogin: boolean = false
   isLoginObservable: any
   loading: boolean = false
+  redirect_Uri=`chrome-extension://hjklgfedihamhgdkbhfplijicighdini/index.html#/`
   constructor(private authService: AuthService, @Inject(TAB_ID) readonly tabId: number) {
 
   }

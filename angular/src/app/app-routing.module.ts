@@ -12,7 +12,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/tab/tab.module').then(m => m.TabModule)
   },
   {
-    path: 'options',
+    path: '',
     loadChildren: () => import('./modules/options/options.module').then(m => m.OptionsModule)
   },
 
