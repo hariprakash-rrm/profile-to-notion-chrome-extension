@@ -1,4 +1,4 @@
-import { Injectable, NotAcceptableException, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotAcceptableException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import axios, { AxiosResponse } from 'axios';
 import { Client } from '@notionhq/client';
@@ -34,7 +34,7 @@ export class AppService {
     )
   }
 
-  async addNotionTokenToSupabase(_data: any): Promise<any> {
+  async addGoogleTokenToSupabase(_data: any): Promise<any> {
     let predata
     try {
       let { token, user_id } = _data;
@@ -42,7 +42,7 @@ export class AppService {
       try {
         const { data, error } = await this.supabase
           .from('credentials')
-          .select()
+          .select().eq('user_id', user_id)
         let saveData = {
           token: token,
           user_id: user_id
@@ -63,7 +63,40 @@ export class AppService {
           const { data, error } = await this.supabase
             .from('credentials')
             .update({ token: token })
-            .eq('id', predata[0].id).select()
+            .eq('user_id', user_id).select()
+          console.log(data, error);
+          return { data, error };
+        }
+
+      } catch (error) {
+        throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      }
+
+    } catch (error) {
+      throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+    }
+  }
+
+  async addNotionTokenToSupabase(_data: any) {
+    let predata
+    try {
+      let { token, user_id, code } = _data;
+      await this.createSupabaseClient(token);
+      try {
+        const { data, error } = await this.supabase
+          .from('credentials')
+          .select().eq('user_id', user_id)
+        
+        console.log(data.length)
+        predata = data
+        if (data.length == 0) {
+          throw new UnauthorizedException('User not found')
+        }
+        else {
+          const { data, error } = await this.supabase
+            .from('credentials')
+            .update({ code: code })
+            .eq('user_id', user_id).select()
           console.log(data, error);
           return { data, error };
         }
@@ -97,7 +130,7 @@ export class AppService {
 
 
 
-  
+
 
 
   async fetchNotionToken(code: string, _datas: any) {

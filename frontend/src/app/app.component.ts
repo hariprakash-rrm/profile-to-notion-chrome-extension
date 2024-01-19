@@ -19,33 +19,46 @@ export class AppComponent implements OnInit {
 
 	}
 
-	async ngOnInit(): Promise<void> {
+	async ngOnInit() {
+		await this.authService.ngOnInit();
 		this.loading = true;
 
-		let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+		let localData: any = await localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
 
 		if (localData) {
 			localData = JSON.parse(localData)
-			// this.signInWithGoogle()
+			let postData = {
+
+				token: localData.access_token,
+				user_id: localData.user.id,
+
+			}
+			await this.addGoogleTokenToSupabase(postData);
+
+			const params = new URL(window.location.href).searchParams;
+			const code = params.get('code');
+			if (code) {
+				let postData = {
+
+					token: localData.access_token,
+					user_id: localData.user.id,
+					code: code
+				}
+				this.addNotionTokenToSupabase(postData);
+			}
+			
+		}else{
+			this.signInWithGoogle()
 		}
 		// Assuming you have an async initialization method in your AuthService
-		await this.authService.ngOnInit();
+		
 		this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
 			this.isLogin = await status;
 			this.loading = false;
 			console.log(status, this.loading, 'status');
 		});
 
-		const params = new URL(window.location.href).searchParams;
-		const code = params.get('code');
-		if (code) {
-			let postData = {
-				id:localData.user.identities[0].id,
-				token :localData.access_token,
-				user_id:localData.user.id
-			}
-			this.addNotionTokenToSupabase(postData);
-		}
+
 	}
 
 	async signInWithGoogle(): Promise<void> {
@@ -64,7 +77,7 @@ export class AppComponent implements OnInit {
 	}
 
 
-	async connectToNotion() {
+	connectToNotion(): string {
 		const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
 		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
 	}
@@ -81,8 +94,12 @@ export class AppComponent implements OnInit {
 		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
 	}
 
+	addGoogleTokenToSupabase(postData: any): void {
+		axios.post(`http://localhost:3000/add-google-token-to-supabase`, postData)
+			.then(async (resp) => this.dbs = await resp);
+
+	}
 	addNotionTokenToSupabase(postData: any): void {
-		
 		axios.post(`http://localhost:3000/add-notion-token-to-supabase`, postData)
 			.then(async (resp) => this.dbs = await resp);
 

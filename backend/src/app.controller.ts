@@ -4,8 +4,19 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
+  @Post('/add-google-token-to-supabase')
+  async saveGoogleToken(@Body() data: any) {
+    const response = await this.appService.addGoogleTokenToSupabase(data);
+
+    if (response.error) {
+      throw new UnauthorizedException(`Failed to add Notion token to Supabase: ${response.error.message}`);
+    }
+
+    return { success: true, data: response.data, error: response.error };
+  }
+
   @Post('/add-notion-token-to-supabase')
-  async saveToken(@Body() data: any) {
+  async saveNotionToken(@Body() data: any) {
     const response = await this.appService.addNotionTokenToSupabase(data);
 
     if (response.error) {
