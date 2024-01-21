@@ -47,13 +47,13 @@ export class AppService {
           token: token,
           user_id: user_id
         };
-        console.log(data.length)
+        // console.log(data.length)
         predata = data
         if (data.length == 0) {
           const { data, error } = await this.supabase
             .from('credentials')
             .insert(saveData).select();
-          console.log(data, error);
+          // console.log(data, error);
           if (error) {
             throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
           }
@@ -64,7 +64,7 @@ export class AppService {
             .from('credentials')
             .update({ token: token })
             .eq('user_id', user_id).select()
-          console.log(data, error);
+          // console.log(data, error);
           return { data, error };
         }
 
@@ -90,16 +90,17 @@ export class AppService {
           code: code,
           user_id: user_id
         };
-        console.log(data.length)
+        // console.log(data.length)
         predata = data
         if (data.length == 0) {
           const { data, error } = await this.supabase
             .from('notion')
             .insert(saveData).select();
-          console.log(data, error);
+          // console.log(data, error);
           if (error) {
             throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
           }
+          this.fetchNotionToken(code, _data)
           return { data, error };
         }
         else {
@@ -107,7 +108,54 @@ export class AppService {
             .from('notion')
             .update({ code: code })
             .eq('user_id', user_id).select()
+          // console.log(data, error);
+          this.fetchNotionToken(code, _data)
+          return { data, error };
+        }
+
+      } catch (error) {
+        throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      }
+
+    } catch (error) {
+      throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+    }
+  }
+
+  async addSecretToSupabase(_data: any, secret: any) {
+    let predata
+    try {
+      let { code, token, user_id } = _data;
+      await this.createSupabaseClient(token);
+      try {
+        const { data, error } = await this.supabase
+          .from('secret')
+          .select().eq('user_id', user_id)
+        let saveData = {
+          secret: secret,
+          user_id: user_id
+        };
+        console.log(data.length)
+        predata = data
+        if (data.length == 0) {
+          const { data, error } = await this.supabase
+            .from('secret')
+            .insert(saveData).select();
           console.log(data, error);
+          
+          if (error) {
+            throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
+          }
+          
+          return { data, error };
+        }
+        else {
+          const { data, error } = await this.supabase
+            .from('secret')
+            .update({ secret: secret })
+            .eq('user_id', user_id).select()
+          console.log(data, error);
+          
           return { data, error };
         }
 
@@ -137,12 +185,12 @@ export class AppService {
   async getCodeDetails(_data) {
     let { code, token, user_id } = _data;
     await this.createSupabaseClient(token);
-    const { data, error }:any = await this.supabase
-      .from('notion')
+    const { data, error }: any = await this.supabase
+      .from('secret')
       .select()
 
-      this.fetchNotionToken(data[0].code)
-      return {data,error}
+    
+    return { isData:true, error }
   }
 
 
@@ -154,30 +202,30 @@ export class AppService {
 
 
 
-  async fetchNotionToken(code: string) {
+  async fetchNotionToken(code: string, _data: any) {
     const clientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a';
     const clientSecret = 'secret_SUgFeT54seyZ7JoNtYseKbFi403AKTtpnMFN5T7dnu6';
 
     const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-    console.log('gettttttttt',encoded, code)
+    console.log('gettttttttt', encoded, code)
 
     const url = 'https://api.notion.com/v1/oauth/token';
-    const _data :any= {
+    const __data = {
       grant_type: 'authorization_code',
-      code: '03e68394-f5ee-4c88-b5c9-d5b7a7ed2540',
-      redirect_uri: 'http://localhost:3000'
+      code: code
+
     };
 
-    const headers:any = {
+    const headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Basic ${encoded}`
-      
+
     };
 
     try {
-      const response = await axios.post(url, _data,  {headers} );
-      console.log('notion test = ',response.data); // Use the response as needed
+      const response = await axios.post(url, __data, { headers });
+      console.log('notion test = ', response.data); // Use the response as needed
 
       const { data } = await axios({
         method: "POST",
@@ -189,6 +237,7 @@ export class AppService {
         },
         data: { filter: { property: "object", value: "database" } },
       });
+      this.addSecretToSupabase(_data, response?.data?.access_token)
       await this.createNotion(response?.data?.access_token)
       // await this.createDbInNotion(_datas)
       return (data?.results)
@@ -202,7 +251,7 @@ export class AppService {
 
   async createNotion(token: string) {
     this.notion = await new Client({
-      auth: 'secret_fCbj2TNEx5ZWEm1OTGgnm7y2BXVwZURdC4nPKtycM8Y',
+      auth: token,
     });
   }
 

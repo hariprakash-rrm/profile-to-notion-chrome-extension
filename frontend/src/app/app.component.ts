@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
 					user_id: localData.user.id,
 					code: code
 				}
-				this.addNotionTokenToSupabase(postData);
+				// this.addNotionTokenToSupabase(postData);
 			}
 			
 		}else{

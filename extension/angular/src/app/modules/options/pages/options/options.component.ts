@@ -60,6 +60,11 @@ export class OptionsComponent implements OnInit {
     this.authService.signout();
   }
 
+  connectToNotion(): string {
+		const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
+		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
+	}
+
 }
 
 

@@ -21,7 +21,7 @@ export class AuthService {
   isNotion = this.isNotionLoginSubject.asObservable()
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
-
+this.connectToNotion()
   }
   ngOnInit() {
     this.setLoadingStatus(true)
@@ -85,13 +85,13 @@ export class AuthService {
             this.addGoogleTokenToSupabase()
             this.route.queryParams.subscribe(params => {
               // Access and log the 'code' parameter
-              let codeParam = params['code'];
+              let codeParam = params['code'] ? params['code']:null;
               console.log('Code parameter:', codeParam);
               if (codeParam) {
-                this.addNotionTokenToSupabase()
+                this.addNotionTokenToSupabase();
               }
             });
-
+            
           }
           this.setLoadingStatus(false)
           this.setLoginStatus(true);
@@ -115,9 +115,10 @@ export class AuthService {
 
   async getNotionCode() {
     let postData = this.getPostData()
+    console.log(postData)
     this.http.post(`${environment.base_url}code`, postData).subscribe((res: any) => {
-      console.log(res)
-      if(res.data != null){
+      console.log('testetetetete',res)
+      if(res){
         this.isNotionLoginSubject.next(true)
       }
     })
@@ -129,12 +130,7 @@ export class AuthService {
       let postData = this.getPostData()
       this.http.post(`${environment.base_url}add-google-token-to-supabase`, postData).subscribe((res: any) => {
         console.log(res)
-        if (res.data[0].code != "" || res.data[0].code == null) {
-
-        }
-        else {
-          this.isNotionLoginSubject.next(true)
-        }
+        
         this.setLoginStatus(true);
       })
     } catch (error) {
@@ -188,6 +184,11 @@ export class AuthService {
   setLoadingStatus(status: boolean) {
     this.isLoadingSUbject.next(status)
   }
+
+  connectToNotion(): string {
+		const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
+		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
+	}
 
   async getUserInfo(idToken) {
 
