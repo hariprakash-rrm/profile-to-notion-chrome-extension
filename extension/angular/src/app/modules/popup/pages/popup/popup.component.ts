@@ -13,21 +13,37 @@ export class PopupComponent implements OnInit {
   message: any;
   isLogin: boolean = false;
   isLoginObservable: any;
-  loading: boolean = false;
+  loading: boolean = true;
+  isNotionLoggedIn = false
+  extensionBasePath = "http://localhost:3000/";
 
   constructor(@Inject(TAB_ID) readonly tabId: number, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
     this.loading = true;
-
+    let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token');
+    
+    if (localData) {
+      localData = JSON.parse(localData);
+      this.isLogin = true
+    }
     // Assuming you have an async initialization method in your AuthService
     await this.authService.ngOnInit();
 
     this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
       this.isLogin = await status;
-      this.loading = false;
       console.log(status, this.loading, 'status');
     });
+
+
+    this.isLoginObservable = this.authService.isLOading$.subscribe(async (status: boolean) => {
+      this.loading = status;
+      console.log(status, 'loading');
+    });
+
+    this.isLoginObservable = this.authService.isNotion.subscribe(async(status:boolean)=>{
+      this.isNotionLoggedIn = status
+    })
   }
 
   async signInWithGoogle(): Promise<void> {
@@ -91,13 +107,60 @@ export class PopupComponent implements OnInit {
 
   async createDbInNotion() {
     let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token');
-          localData = JSON.parse(localData);
-    chrome.runtime.sendMessage({method: "getStatus",authData:localData}, function(response) {
-      console.log('Test = = = = = = ',JSON.parse(response));
+    localData = JSON.parse(localData);
+    chrome.runtime.sendMessage({ method: "getStatus", authData: localData }, function (response) {
+      console.log('Test = = = = = = ', JSON.parse(response));
 
     });
     axios.post("http://localhost:3000/create", localData)
-    .then(async (resp) => ( await resp.data))
-    .catch((error) => console.error("Error during POST request:", error));
+      .then(async (resp) => (await resp.data))
+      .catch((error) => console.error("Error during POST request:", error));
+  }
+
+
+  async addGoogleTokenToSupabase(postData) {
+    try {
+      const response = await fetch(
+        `${this.extensionBasePath}add-google-token-to-supabase`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any additional headers if needed
+          },
+          body: JSON.stringify(postData),
+        }
+      );
+
+      // Handle the response if needed
+      const data = await response.json();
+      console.log("Response:", data);
+    } catch (error) {
+      // Handle errors
+      console.error("Error:", error);
+    }
+  }
+
+  async addNotionTokenToSupabase(postData) {
+    try {
+      const response = await fetch(
+        `${this.extensionBasePath}add-notion-token-to-supabase`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any additional headers if needed
+          },
+          body: JSON.stringify(postData),
+        }
+      );
+
+      // Handle the response if needed
+      const data = await response.json();
+      console.log("Response:", data);
+    } catch (error) {
+      // Handle errors
+      console.error("Error:", error);
+    }
   }
 }

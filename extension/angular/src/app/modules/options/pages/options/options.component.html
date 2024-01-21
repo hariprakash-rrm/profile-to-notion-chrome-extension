@@ -68,7 +68,7 @@
 
         
       </div>
-      <button>
+      <button *ngIf="!isNotionLoggedIn && isLogin">
         <a
         href="https://api.notion.com/v1/oauth/authorize?client_id=4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A4200"
         >Add to Notion</a

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Buffer } from 'buffer';
 import axios from 'axios';
+
 import { AuthService } from './auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -15,7 +17,7 @@ export class AppComponent implements OnInit {
 	isLogin: boolean = false
 	dbs: any = [];
 
-	constructor(private authService: AuthService) {
+	constructor(private authService: AuthService,private route: ActivatedRoute) {
 
 	}
 

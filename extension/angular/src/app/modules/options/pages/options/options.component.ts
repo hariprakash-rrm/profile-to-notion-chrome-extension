@@ -16,6 +16,7 @@ export class OptionsComponent implements OnInit {
   isLogin: boolean = false
   isLoginObservable: any
   loading: boolean = false
+  isNotionLoggedIn = false
 
   constructor(private authService: AuthService, @Inject(TAB_ID) readonly tabId: number) {
 
@@ -29,9 +30,18 @@ export class OptionsComponent implements OnInit {
 
     this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
       this.isLogin = await status;
-      this.loading = false;
       console.log(status, this.loading, 'status');
     });
+
+
+    this.isLoginObservable = this.authService.isLOading$.subscribe(async (status: boolean) => {
+      this.loading = status;
+      console.log(status, 'loading');
+    });
+
+    this.isLoginObservable = this.authService.isNotion.subscribe(async(status:boolean)=>{
+      this.isNotionLoggedIn = status
+    })
   }
 
   async signInWithGoogle(): Promise<void> {

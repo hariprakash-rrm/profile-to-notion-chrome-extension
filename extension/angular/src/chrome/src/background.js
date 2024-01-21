@@ -39,20 +39,6 @@ function handleTabUpdate(tabId, changeInfo, tab) {
     if (changeInfo.url.includes("http://localhost:4200/?code=")) {
       // Extract the 'code' parameter from the URL
       const codeParam = new URL(changeInfo.url).searchParams.get("code");
-      chrome.storage.local.get(["key"]).then((result) => {
-        let aToken = result.key;
-        console.log("Value currently is " + result.key);
-        chrome.storage.local.get(["id"]).then((result) => {
-          let id = result.id;
-          let postData = {
-            token: aToken,
-            user_id: id,
-            code: codeParam ? codeParam : "",
-          };
-          addGoogleTokenToSupabase(postData);
-          addNotionTokenToSupabase(postData)
-        });
-      });
 
       // Build the extension URL with the 'code' parameter
       const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/?code=${codeParam}`;
@@ -108,61 +94,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Additional background script logic can go here
-// ...
+chrome.runtime.onInstalled.addListener(function (details) {
+  chrome.storage.local.remove(["key","id"],function(){
+    var error = chrome.runtime.lastError;
+       if (error) {
+           console.error(error);
+       }
+   })
+  // Build the extension URL with the 'code' parameter
+  const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/`;
 
-async function createDbInNotion(response) {
-  // axios.post("http://localhost:3000/create", response)
-  //   .then(async (resp) => (this.dbs = await resp.data))
-  //   .catch((error) => console.error("Error during POST request:", error));
-}
+  // Open the extension URL in a new tab
+  chrome.tabs.create({ url: extensionURL }, function (newTab) {
 
-// background.js
+  });
+});
 
-const extensionBasePath = "http://localhost:3000/"; // Adjust the path as needed
 
-async function addGoogleTokenToSupabase(postData) {
-  try {
-    const response = await fetch(
-      `${extensionBasePath}add-google-token-to-supabase`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Add any additional headers if needed
-        },
-        body: JSON.stringify(postData),
-      }
-    );
 
-    // Handle the response if needed
-    const data = await response.json();
-    console.log("Response:", data);
-  } catch (error) {
-    // Handle errors
-    console.error("Error:", error);
-  }
-}
-
-async function addNotionTokenToSupabase(postData) {
-  try {
-    const response = await fetch(
-      `${extensionBasePath}add-notion-token-to-supabase`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Add any additional headers if needed
-        },
-        body: JSON.stringify(postData),
-      }
-    );
-
-    // Handle the response if needed
-    const data = await response.json();
-    console.log("Response:", data);
-  } catch (error) {
-    // Handle errors
-    console.error("Error:", error);
-  }
-}

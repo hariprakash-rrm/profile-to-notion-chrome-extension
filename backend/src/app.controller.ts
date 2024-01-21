@@ -28,6 +28,11 @@ export class AppController {
     return { success: true, data: response.data, error: response.error };
   }
 
+  @Post('/code')
+  async getCodeDetails(@Body() data:any){
+    return this.appService.getCodeDetails(data)
+  }
+
 
 
   @Get()
