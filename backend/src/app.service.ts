@@ -36,6 +36,7 @@ export class AppService {
 
   async addGoogleTokenToSupabase(_data: any): Promise<any> {
     let predata
+    console.log(_data)
     try {
       let { token, user_id } = _data;
       await this.createSupabaseClient(token);

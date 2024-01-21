@@ -6,7 +6,9 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
   @Post('/add-google-token-to-supabase')
   async saveGoogleToken(@Body() data: any) {
+    console.log('data = data',data)
     const response = await this.appService.addGoogleTokenToSupabase(data);
+   
 
     if (response.error) {
       throw new UnauthorizedException(`Failed to add Notion token to Supabase: ${response.error.message}`);
