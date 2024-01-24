@@ -117,7 +117,6 @@ this.connectToNotion()
     let postData = this.getPostData()
     console.log(postData)
     this.http.post(`${environment.base_url}code`, postData).subscribe((res: any) => {
-      console.log('testetetetete',res)
       if(res){
         this.isNotionLoginSubject.next(true)
       }
@@ -128,8 +127,15 @@ this.connectToNotion()
     try {
 
       let postData = this.getPostData()
+      chrome.storage.local.set
       this.http.post(`${environment.base_url}add-google-token-to-supabase`, postData).subscribe((res: any) => {
         console.log(res)
+        chrome.storage.local.set({ gAuth: postData.token }).then(() => {
+          console.log("Value is set",postData.token);
+        });
+        chrome.storage.local.set({ user_id: postData.user_id }).then(() => {
+          console.log("Value is set",postData.user_id);
+        });
         
         this.setLoginStatus(true);
       })

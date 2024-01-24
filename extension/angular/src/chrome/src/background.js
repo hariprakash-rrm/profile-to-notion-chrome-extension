@@ -5,7 +5,6 @@ chrome.commands.onCommand.addListener(function (command) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       if (tabs && tabs.length > 0) {
         const tabId = tabs[0].id;
-
         chrome.tabs.sendMessage(
           tabId,
           { action: "toggleSidebarhkey" },
@@ -26,32 +25,30 @@ chrome.commands.onCommand.addListener(function (command) {
   }
 });
 
-// background.js
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(request, "reqqqqqq");
-  // Check if the received message has the expected method property
-  if (request && request.method === "get") {
-    // Perform the desired actions based on the received message
-    // You can send a response back if needed
-    const responseData = {
-      status: "success",
-      message: "Data successfully retrieved.",
-    };
-    sendResponse(responseData);
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//   console.log(request, "reqqqqqq");
+//   // Check if the received message has the expected method property
+//   if (request && request.method === "get") {
+//     // Perform the desired actions based on the received message
+//     // You can send a response back if needed
+//     const responseData = {
+//       status: "success",
+//       message: "Data successfully retrieved.",
+//     };
+//     sendResponse(responseData);
 
-    // Log the received message
-    console.log("Received message:", request);
+//     // Log the received message
+//     console.log("Received message:", request);
 
-    // You can also handle the message further as needed
-  } else {
-    // Handle unexpected or unhandled messages
-    console.error("Unexpected message:", request);
-  }
-});
+//     // You can also handle the message further as needed
+//   } else {
+//     // Handle unexpected or unhandled messages
+//     console.error("Unexpected message:", request);
+//   }
+// });
 
 
-// background.js
 
 // Function to handle tab updates
 function handleTabUpdate(tabId, changeInfo, tab) {
@@ -81,7 +78,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("15:33 pm = ", request);
 
   if (request.method === "getStatus") {
     chrome.storage.local.set({ authData: request.authData }, function () {
@@ -133,5 +129,34 @@ chrome.runtime.onInstalled.addListener(function (details) {
   });
 });
 
+
+async function createDbInNotion(_data){
+  console.log('working = = =', _data)
+
+   // Replace 'https://api.example.com/endpoint' with the actual API endpoint
+  const apiUrl = 'http://localhost:3000/add-data';
+
+  // Example data to send in the body
+  const requestData = {
+    data:_data
+  };
+
+  fetch(apiUrl, {
+    method: 'POST', // or 'PUT', 'DELETE', etc.
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any other headers if needed
+    },
+    body: JSON.stringify(requestData)
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('API Response:', data);
+      // Handle the API response here
+    })
+    .catch(error => {
+      console.error('API Error:', error);
+    });
+}
 
 

@@ -34,8 +34,8 @@
   "commands": {
     "toggle-feature": {
       "suggested_key": {
-        "default": "Ctrl+Shift+0",
-        "mac": "Command+Shift+0"
+        "default": "Ctrl+Shift+4",
+        "mac": "Command+Shift+4"
       },
       "description": "Toggle the helpcenter screen"
     }

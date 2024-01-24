@@ -47,13 +47,13 @@ export class AppService {
           token: token,
           user_id: user_id
         };
-        // console.log(data.length)
+        // // console.log(data.length)
         predata = data
         if (data.length == 0) {
           const { data, error } = await this.supabase
             .from('credentials')
             .insert(saveData).select();
-          // console.log(data, error);
+          // // console.log(data, error);
           if (error) {
             throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
           }
@@ -64,7 +64,7 @@ export class AppService {
             .from('credentials')
             .update({ token: token })
             .eq('user_id', user_id).select()
-          // console.log(data, error);
+          // // console.log(data, error);
           return { data, error };
         }
 
@@ -90,13 +90,13 @@ export class AppService {
           code: code,
           user_id: user_id
         };
-        // console.log(data.length)
+        // // console.log(data.length)
         predata = data
         if (data.length == 0) {
           const { data, error } = await this.supabase
             .from('notion')
             .insert(saveData).select();
-          // console.log(data, error);
+          // // console.log(data, error);
           if (error) {
             throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
           }
@@ -108,7 +108,7 @@ export class AppService {
             .from('notion')
             .update({ code: code })
             .eq('user_id', user_id).select()
-          // console.log(data, error);
+          // // console.log(data, error);
           this.fetchNotionToken(code, _data)
           return { data, error };
         }
@@ -135,18 +135,18 @@ export class AppService {
           secret: secret,
           user_id: user_id
         };
-        console.log(data.length)
+        // console.log(data.length)
         predata = data
         if (data.length == 0) {
           const { data, error } = await this.supabase
             .from('secret')
             .insert(saveData).select();
-          console.log(data, error);
-          
+          // console.log(data, error);
+
           if (error) {
             throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
           }
-          
+
           return { data, error };
         }
         else {
@@ -154,8 +154,8 @@ export class AppService {
             .from('secret')
             .update({ secret: secret })
             .eq('user_id', user_id).select()
-          console.log(data, error);
-          
+          // console.log(data, error);
+
           return { data, error };
         }
 
@@ -177,7 +177,7 @@ export class AppService {
       .from('credentials')
       .delete()
 
-    console.log(data, error)
+    // console.log(data, error)
 
     return { data, error }
   }
@@ -189,8 +189,8 @@ export class AppService {
       .from('secret')
       .select()
 
-    
-    return { isData:true, error }
+
+    return { isData: true, error }
   }
 
 
@@ -207,7 +207,6 @@ export class AppService {
     const clientSecret = 'secret_SUgFeT54seyZ7JoNtYseKbFi403AKTtpnMFN5T7dnu6';
 
     const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-    console.log('gettttttttt', encoded, code)
 
     const url = 'https://api.notion.com/v1/oauth/token';
     const __data = {
@@ -225,7 +224,7 @@ export class AppService {
 
     try {
       const response = await axios.post(url, __data, { headers });
-      console.log('notion test = ', response.data); // Use the response as needed
+      // console.log('notion test = ', response.data); // Use the response as needed
 
       const { data } = await axios({
         method: "POST",
@@ -237,8 +236,9 @@ export class AppService {
         },
         data: { filter: { property: "object", value: "database" } },
       });
+      console.log('test = = =', response)
       this.addSecretToSupabase(_data, response?.data?.access_token)
-      await this.createNotion(response?.data?.access_token)
+      // await this.createNotion(response?.data?.access_token, _data)
       // await this.createDbInNotion(_datas)
       return (data?.results)
 
@@ -249,18 +249,110 @@ export class AppService {
     }
   }
 
-  async createNotion(token: string) {
+  async createNotion(token: string, _data: any) {
+    try{
     this.notion = await new Client({
       auth: token,
     });
+    console.log(this.notion)
+    // this.notion.pages.create({
+
+    // Create a new database
+    const databases = await this.notion.search({
+      filter: {
+        property: "object",
+        value: "page",
+      },
+    })
+
+    if (databases.results.length === 0) {
+      throw new Error("This bot doesn't have access to any databases!")
+    }
+
+    const database = databases.results[0]
+    if (!database) {
+      throw new Error("This bot doesn't have access to any databases!")
+    }
+    delete _data.token;
+    delete _data.user_id
+
+    // Process the "Websites" key if it exists and is an array
+    if (_data.Websites && Array.isArray(_data.Websites)) {
+      _data.Websites = _data.Websites.map((website) => {
+        // Remove '\n' and '(Other)' from each element
+        return website.replace(/\n\s*\n\s*\(Company\)/g, '').trim();
+      });
+    }
+
+    const formattedData = Object.entries(_data).map(([key, value]) => {
+      // Align keys and values by adding spaces or tabs
+      return `${key}: ${Array.isArray(value) ? value.join(", ") : value}`;
+    });
+    const timestamp = Date.now();
+    const date = new Date(timestamp);
+
+    const options: any = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+    };
+
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+
+    const blockId =  databases.results[0].id // Blocks can be appended to other blocks *or* pages. Therefore, a page ID can be used for the block_id parameter
+  
+
+
+    const linkedTextResponse = await this.notion.blocks.children.append({
+      block_id: databases.results[0].id,
+      children: [
+        {
+          heading_3: {
+            rich_text: [
+              {
+                text: {
+                  content: `${_data.Name}'s Profile`,
+                },
+              },
+            ],
+          },
+        },
+        {
+          paragraph: {
+            rich_text: [
+              {
+                text: {
+                  content: `${formattedDate} \n`,
+                },
+              },
+              // Format _data for display
+              ...formattedData.map((formattedItem) => ({
+                text: {
+                  content: `${formattedItem}\n`,
+                },
+              })),
+            ],
+          },
+        },
+      ],
+    });
+
+
+
+
+
+
+
+   }catch(err){
+    console.log(err)
+   } // })
   }
 
-  async addTodo(todo: Todo) {
-    const { data, error } = await this.supabase
-      .from('todos')
-      .insert(todo)
-    return { data, error };
-  }
 
 
   async createDbInNotion(response) {
@@ -308,7 +400,7 @@ export class AppService {
       });
 
       // // // Print the new database response
-      // console.log(newDatabase);
+      // // console.log(newDatabase);
 
       // Add a few new pages to the database that was just created
 
@@ -371,7 +463,7 @@ export class AppService {
         },
       });
 
-      console.log("New page added to Notion:", newPage);
+      // console.log("New page added to Notion:", newPage);
     } catch (error) {
       console.error("Error adding data to Notion database:", error);
     }
@@ -380,56 +472,31 @@ export class AppService {
 
 
 
-  async getAllProducts() {
-    const { data, error } = await this.supabase
-      .from('todos')
-      .select()
+ 
+  async getUserData(_data: any) {
+    let { token, user_id } = _data.data
 
-    return data
-  }
-
-  async getProductById(id: string) {
-    const { data, error } = await this.supabase
-      .from('products')
-      .select()
-      .eq('id', id);
-    return data;
-  }
-
-  async createProduct(product: any) {
+    let secret = ''
+    await this.createSupabaseClient(token)
     try {
-      const { error } = await this.supabase
-        .from('todos')
-        .insert(product);
-
-      if (error) {
-        console.error('Error during product creation:', error);
-        throw new Error('Failed to create product.');
+      const { data, error } = await this.supabase
+        .from('secret')
+        .select().eq('user_id', user_id)
+      if (data) {
+        secret = data[0].secret
+        console.log(secret)
+        this.createNotion(secret, _data.data)
+      } else {
+        console.log(error)
       }
 
-      return 'created!!';
     } catch (error) {
-      console.error('Unexpected error during product creation:', error);
-      throw new Error('Unexpected error occurred.');
+      console.log(error)
     }
   }
 
 
-  async updateProduct(id: string, product: any) {
-    const { error } = await this.supabase
-      .from('products')
-      .update(product)
-      .eq('id', id);
-    if (error) throw error;
-    return 'updated!!';
-  }
 
-  async deleteProduct(id: string) {
-    const { error } = await this.supabase
-      .from('products')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
-    return 'deleted!!';
-  }
+
 }
+

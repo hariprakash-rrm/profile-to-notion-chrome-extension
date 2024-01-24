@@ -98,7 +98,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("User data:", userData);
 
       // Signal that processing is complete
-      resolve(userData);
+
+      chrome.storage.local.get(["gAuth"]).then((result) => {
+        console.log("Value currently is " + result);
+        userData.token = result.gAuth
+        
+      });
+      chrome.storage.local.get(["user_id"]).then((result) => {
+        console.log("Value currently is " + result);
+        userData.user_id = result.user_id
+        resolve(userData);
+      });
+      
     } catch (error) {
       console.error(error.message || "Something went wrong.");
 

@@ -33,31 +33,12 @@ export class AppController {
     return this.appService.getCodeDetails(data)
   }
 
-
-
-  @Get()
-  async findAll() {
-    return this.appService.getAllProducts();
+  @Post('/add-data')
+  addDataToNotion(@Body() data :any){
+    return this.appService.getUserData(data)
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.appService.getProductById(id);
-  }
 
-  @Post()
-  async create(@Body() product: any) {
-    return this.appService.createProduct(product);
-  }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() product: any) {
-    return this.appService.updateProduct(id, product);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.appService.deleteProduct(id);
-  }
 
 }
