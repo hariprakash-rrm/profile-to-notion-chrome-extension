@@ -1,4 +1,3 @@
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   new Promise(async (resolve, reject) => {
     try {
@@ -87,29 +86,71 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }
         }
 
-        return contactInfo;
+        // Assuming 'element' is the reference to your HTML element
+        const _element = document.querySelector(".text-body-medium");
+
+        // Check if the element is found
+        if (_element) {
+          // Log the text content
+          console.log(_element.textContent.trim());
+          contactInfo.about = _element.textContent.trim();
+        } else {
+          console.log("Element not found");
+        }
+
+        const photoWrapper = document.querySelector(
+          ".pv-top-card__photo-wrapper"
+        );
+
+        const imgTag = document.querySelector(
+          ".pv-top-card-profile-picture__image"
+        );
+
+        // Log the src attribute
+        console.log("test", imgTag);
+        if (imgTag) {
+          // Get the src attribute
+          let _imgSrc = imgTag.getAttribute("src");
+          contactInfo["img"] = _imgSrc;
+          return contactInfo;
+        } else {
+          // Check if the container element is found
+          if (photoWrapper) {
+            // Find the image element within the container
+            const imgElement = photoWrapper.querySelector(".evi-image");
+
+            // Check if the image element is found
+            if (imgElement) {
+              // Log the src attribute
+              console.log(imgElement.getAttribute("src"));
+              contactInfo["img"] = imgElement.getAttribute("src");
+            } else {
+              console.log("Image element not found within the container");
+            }
+          } else {
+            console.log("Container element not found");
+          }
+
+          return contactInfo;
+        }
       };
 
       // Example usage
-      const collectedData = collectHtmlData();
+      const collectedData = await collectHtmlData();
       console.log(collectedData);
 
       const userData = await handleContactInfo();
       console.log("User data:", userData);
 
-      // Signal that processing is complete
-
       chrome.storage.local.get(["gAuth"]).then((result) => {
         console.log("Value currently is " + result);
-        userData.token = result.gAuth
-        
+        userData.token = result.gAuth;
       });
       chrome.storage.local.get(["user_id"]).then((result) => {
         console.log("Value currently is " + result);
-        userData.user_id = result.user_id
+        userData.user_id = result.user_id;
         resolve(userData);
       });
-      
     } catch (error) {
       console.error(error.message || "Something went wrong.");
 
@@ -119,7 +160,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   })
     .then((response) => sendResponse(response))
     .catch((error) => sendResponse(error));
-    
+
   // Important: Return true to indicate that you will respond asynchronously
   return true;
 });

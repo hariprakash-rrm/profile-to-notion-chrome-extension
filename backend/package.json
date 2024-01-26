@@ -27,8 +27,12 @@
     "@supabase/supabase-js": "^2.39.3",
     "axios": "^1.6.5",
     "dotenv": "^16.3.1",
+    "hast-util-from-html": "^2.0.1",
+    "html-to-notion": "^0.2.1",
+    "html-to-notion-blocks": "^0.1.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sharp": "^0.33.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

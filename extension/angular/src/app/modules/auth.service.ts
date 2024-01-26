@@ -206,6 +206,7 @@ this.connectToNotion()
     const { error }: any = supabase.auth.signOut().then((res: any) => {
       this.setLoginStatus(false)
       console.log(res)
+      window.location.reload()
     })
     console.log(error)
 

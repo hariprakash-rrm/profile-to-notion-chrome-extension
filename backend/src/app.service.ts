@@ -3,7 +3,13 @@ import { HttpService } from '@nestjs/axios';
 import axios, { AxiosResponse } from 'axios';
 import { Client } from '@notionhq/client';
 import { createClient } from '@supabase/supabase-js';
+const fs = require('fs');
+const path = require('path');
+
+const sharp = require('sharp');
+
 import { env } from 'process';
+import { join } from 'path';
 require("dotenv").config();
 export class Todo {
   id: string;
@@ -238,8 +244,6 @@ export class AppService {
       });
       console.log('test = = =', response)
       this.addSecretToSupabase(_data, response?.data?.access_token)
-      // await this.createNotion(response?.data?.access_token, _data)
-      // await this.createDbInNotion(_datas)
       return (data?.results)
 
 
@@ -250,97 +254,149 @@ export class AppService {
   }
 
   async createNotion(token: string, _data: any) {
-    try{
-    this.notion = await new Client({
-      auth: token,
-    });
-    console.log(this.notion)
-    // this.notion.pages.create({
-
-    // Create a new database
-    const databases = await this.notion.search({
-      filter: {
-        property: "object",
-        value: "page",
-      },
-    })
-
-    if (databases.results.length === 0) {
-      throw new Error("This bot doesn't have access to any databases!")
-    }
-
-    const database = databases.results[0]
-    if (!database) {
-      throw new Error("This bot doesn't have access to any databases!")
-    }
-    delete _data.token;
-    delete _data.user_id
-
-    // Process the "Websites" key if it exists and is an array
-    if (_data.Websites && Array.isArray(_data.Websites)) {
-      _data.Websites = _data.Websites.map((website) => {
-        // Remove '\n' and '(Other)' from each element
-        return website.replace(/\n\s*\n\s*\(Company\)/g, '').trim();
+    try {
+      this.notion = await new Client({
+        auth: token,
       });
-    }
 
-    const formattedData = Object.entries(_data).map(([key, value]) => {
-      // Align keys and values by adding spaces or tabs
-      return `${key}: ${Array.isArray(value) ? value.join(", ") : value}`;
-    });
-    const timestamp = Date.now();
-    const date = new Date(timestamp);
+      const databases = await this.notion.search({
+        filter: {
+          property: "object",
+          value: "database",
+        },
+      })
 
-    const options: any = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-    };
+      if (databases.results.length === 0) {
+        throw new Error("This bot doesn't have access to any databases!")
+      }
 
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+      const database = databases.results[0]
+      if (!database) {
+        throw new Error("This bot doesn't have access to any databases!")
+      }
+      delete _data.token;
+      delete _data.user_id
+
+      // Check if either Websites or Website is present in _data
+      if (_data.Websites || _data.Website) {
+        // Use the appropriate property based on availability
+        const websitesArray = _data.Websites || _data.Website; // Convert to array if it's a single string
+
+        // Concatenate the websites array into a single string
+        _data.Websites = websitesArray.join(', ');
+
+        // Remove the redundant property if it exists
+        delete _data.Website;
+      }
 
 
-    const blockId =  databases.results[0].id // Blocks can be appended to other blocks *or* pages. Therefore, a page ID can be used for the block_id parameter
-  
+      const formattedData = Object.entries(_data).map(([key, value]) => {
+        // Align keys and values by adding spaces or tabs
+        return `${key}: ${Array.isArray(value) ? value.join(", ") : value}`;
+      });
+      const timestamp = Date.now();
+      const date = new Date(timestamp);
+
+      const options: any = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short',
+      };
+
+      const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+      const blockId = databases.results[0].id // Blocks can be appended to other blocks *or* pages. Therefore, a page ID can be used for the block_id parameter
+      const imageUrl = _data.img;
+      let profileImage
+      axios({
+        method: 'get',
+        url: imageUrl,
+        responseType: 'arraybuffer',
+      })
+        .then(async (response) => {
+          // Convert the image buffer to PNG format
+          const pngBuffer = await sharp(response.data).png().toBuffer();
+          const timestamp = new Date().getTime();
+          console.log(timestamp);
+
+          try {
+            const { data, error } = await this.supabase.storage
+              .from('avatars')
+              .upload(`public/${timestamp}.png`, pngBuffer, { contentType: 'image/png' });
+          } catch (error) {
+            console.log(error)
+          }
+
+          const { data } = this.supabase
+            .storage
+            .from('avatars')
+            .getPublicUrl(`public/${timestamp}.png`)
+          // Now you have the Base64-encoded PNG image uploaded to Supabase storage
+          profileImage = data.publicUrl
+          const linkedTextResponse = await this.notion.pages.create({
+            parent: {
+              database_id: databases.results[0].id,
+            },
+            properties: {
 
 
-    const linkedTextResponse = await this.notion.blocks.children.append({
-      block_id: databases.results[0].id,
-      children: [
-        {
-          heading_3: {
-            rich_text: [
-              {
-                text: {
-                  content: `${_data.Name}'s Profile`,
+              Photo: {
+                type: 'files',
+                files: [
+                  {
+                    name: 'example.png',
+                    type: 'external',
+                    external: {
+                      url: profileImage,
+                    },
+                  },
+                ],
+              },
+              Name: {
+                title: [
+                  {
+                    text: {
+                      content: `${_data.Name}`, // Replace with your actual name
+                    },
+                  },
+                ],
+              },
+              Website: {
+                url: _data.Websites ? _data.Websites.replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details'
+              },
+              Profile: {
+                url: _data["Your Profile"][0] ? _data["Your Profile"][0] : 'No details'
+              },
+              Email: {
+                url: _data.Email && _data.Email[0] ? _data.Email[0] : 'No details'
+              },
+
+              About: {
+                rich_text: [
+                  {
+                    text: {
+                      content: _data.about,
+                    },
+                  },
+                ],
+              },
+
+              Status: {
+                select: {
+                  name: 'In Progress', // Replace with your actual status
                 },
               },
-            ],
-          },
-        },
-        {
-          paragraph: {
-            rich_text: [
-              {
-                text: {
-                  content: `${formattedDate} \n`,
-                },
-              },
-              // Format _data for display
-              ...formattedData.map((formattedItem) => ({
-                text: {
-                  content: `${formattedItem}\n`,
-                },
-              })),
-            ],
-          },
-        },
-      ],
-    });
+
+            },
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching or processing image:', error);
+        });
 
 
 
@@ -348,9 +404,11 @@ export class AppService {
 
 
 
-   }catch(err){
-    console.log(err)
-   } // })
+
+
+    } catch (err) {
+      console.log(err)
+    } // })
   }
 
 
@@ -472,7 +530,7 @@ export class AppService {
 
 
 
- 
+
   async getUserData(_data: any) {
     let { token, user_id } = _data.data
 
