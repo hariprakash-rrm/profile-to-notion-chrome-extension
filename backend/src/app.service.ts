@@ -1,4 +1,4 @@
-import { Injectable, NotAcceptableException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import axios, { AxiosResponse } from 'axios';
 import { Client } from '@notionhq/client';
@@ -41,139 +41,99 @@ export class AppService {
   }
 
   async addGoogleTokenToSupabase(_data: any): Promise<any> {
-    let predata
     try {
       let { token, user_id } = _data;
       await this.createSupabaseClient(token);
-      try {
-        const { data, error } = await this.supabase
-          .from('credentials')
-          .select().eq('user_id', user_id)
-        let saveData = {
-          token: token,
-          user_id: user_id
-        };
-        // // console.log(data.length)
-        predata = data
-        if (data.length == 0) {
-          const { data, error } = await this.supabase
-            .from('credentials')
-            .insert(saveData).select();
-          // // console.log(data, error);
-          if (error) {
-            throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
-          }
-          return { data, error };
-        }
-        else {
-          const { data, error } = await this.supabase
-            .from('credentials')
-            .update({ token: token })
-            .eq('user_id', user_id).select()
-          // // console.log(data, error);
-          return { data, error };
-        }
 
-      } catch (error) {
-        throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      const { data, error } = await this.supabase
+        .from('credentials')
+        .select()
+        .eq('user_id', user_id);
+
+      let saveData = {
+        token: token,
+        user_id: user_id
+      };
+
+      if (data.length === 0) {
+        await this.supabase.from('credentials').insert(saveData).select();
+      } else {
+        await this.supabase
+          .from('credentials')
+          .update({ token: token })
+          .eq('user_id', user_id)
+          .select();
       }
 
+      return { data, error };
     } catch (error) {
-      throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      throw new NotAcceptableException(`Error adding Google token to Supabase: ${error.message}`);
     }
   }
 
   async addNotionTokenToSupabase(_data: any) {
-    let predata
     try {
       let { code, token, user_id } = _data;
       await this.createSupabaseClient(token);
-      try {
-        const { data, error } = await this.supabase
-          .from('notion')
-          .select().eq('user_id', user_id)
-        let saveData = {
-          code: code,
-          user_id: user_id
-        };
-        // // console.log(data.length)
-        predata = data
-        if (data.length == 0) {
-          const { data, error } = await this.supabase
-            .from('notion')
-            .insert(saveData).select();
-          // // console.log(data, error);
-          if (error) {
-            throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
-          }
-          this.fetchNotionToken(code, _data)
-          return { data, error };
-        }
-        else {
-          const { data, error } = await this.supabase
-            .from('notion')
-            .update({ code: code })
-            .eq('user_id', user_id).select()
-          // // console.log(data, error);
-          this.fetchNotionToken(code, _data)
-          return { data, error };
-        }
 
-      } catch (error) {
-        throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      const { data, error } = await this.supabase
+        .from('notion')
+        .select()
+        .eq('user_id', user_id);
+
+      let saveData = {
+        code: code,
+        user_id: user_id
+      };
+
+      if (data.length === 0) {
+        await this.supabase.from('notion').insert(saveData).select();
+        this.fetchNotionToken(code, _data);
+      } else {
+        await this.supabase
+          .from('notion')
+          .update({ code: code })
+          .eq('user_id', user_id)
+          .select();
+        this.fetchNotionToken(code, _data);
       }
 
+      return { data, error };
     } catch (error) {
       throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
     }
   }
 
   async addSecretToSupabase(_data: any, secret: any) {
-    let predata
     try {
       let { code, token, user_id } = _data;
       await this.createSupabaseClient(token);
-      try {
-        const { data, error } = await this.supabase
+
+      const { data, error } = await this.supabase
+        .from('secret')
+        .select()
+        .eq('user_id', user_id);
+
+      let saveData = {
+        secret: secret,
+        user_id: user_id
+      };
+
+      if (data.length === 0) {
+        await this.supabase.from('secret').insert(saveData).select();
+      } else {
+        await this.supabase
           .from('secret')
-          .select().eq('user_id', user_id)
-        let saveData = {
-          secret: secret,
-          user_id: user_id
-        };
-        // console.log(data.length)
-        predata = data
-        if (data.length == 0) {
-          const { data, error } = await this.supabase
-            .from('secret')
-            .insert(saveData).select();
-          // console.log(data, error);
-
-          if (error) {
-            throw new NotAcceptableException(`Supabase insert error: ${error.message}`);
-          }
-
-          return { data, error };
-        }
-        else {
-          const { data, error } = await this.supabase
-            .from('secret')
-            .update({ secret: secret })
-            .eq('user_id', user_id).select()
-          // console.log(data, error);
-
-          return { data, error };
-        }
-
-      } catch (error) {
-        throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+          .update({ secret: secret })
+          .eq('user_id', user_id)
+          .select();
       }
 
+      return { data, error };
     } catch (error) {
-      throw new NotAcceptableException(`Error adding Notion token to Supabase: ${error.message}`);
+      throw new NotAcceptableException(`Error adding secret to Supabase: ${error.message}`);
     }
   }
-
 
   async getNotionTokenFromSupabase(_data: any) {
     let { token } = _data
@@ -183,21 +143,34 @@ export class AppService {
       .from('credentials')
       .delete()
 
-    // console.log(data, error)
-
     return { data, error }
   }
 
   async getCodeDetails(_data) {
-    let { code, token, user_id } = _data;
-    await this.createSupabaseClient(token);
-    const { data, error }: any = await this.supabase
-      .from('secret')
-      .select()
+    try {
+      let { code, token, user_id } = _data;
 
+      if (!code || !token || !user_id) {
+        throw new Error('Invalid input data. Please provide code, token, and user_id.');
+      }
 
-    return { isData: true, error }
+      await this.createSupabaseClient(token);
+
+      const { data, error }: any = await this.supabase
+        .from('secret')
+        .select();
+
+      if (error) {
+        throw new Error('Error fetching data from Supabase.');
+      }
+
+      return { isData: true, data };
+    } catch (error) {
+      console.error('Error in getCodeDetails:', error);
+      throw new Error('Failed to get code details.');
+    }
   }
+
 
 
 
@@ -209,49 +182,57 @@ export class AppService {
 
 
   async fetchNotionToken(code: string, _data: any) {
-    const clientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a';
-    const clientSecret = 'secret_SUgFeT54seyZ7JoNtYseKbFi403AKTtpnMFN5T7dnu6';
-
-    const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-
-    const url = 'https://api.notion.com/v1/oauth/token';
-    const __data = {
-      grant_type: 'authorization_code',
-      code: code
-
-    };
-
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Basic ${encoded}`
-
-    };
-
     try {
-      const response = await axios.post(url, __data, { headers });
-      // console.log('notion test = ', response.data); // Use the response as needed
+      const clientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a';
+      const clientSecret = 'secret_SUgFeT54seyZ7JoNtYseKbFi403AKTtpnMFN5T7dnu6';
 
-      const { data } = await axios({
-        method: "POST",
-        url: "https://api.notion.com/v1/search",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${response.data.access_token}`,
-          "Notion-Version": "2022-02-22",
-        },
-        data: { filter: { property: "object", value: "database" } },
-      });
-      console.log('test = = =', response)
-      this.addSecretToSupabase(_data, response?.data?.access_token)
-      return (data?.results)
+      const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
+      const url = 'https://api.notion.com/v1/oauth/token';
+      const __data = {
+        grant_type: 'authorization_code',
+        code: code
+      };
 
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${encoded}`
+      };
+
+      try {
+        const response = await axios.post(url, __data, { headers });
+
+        try {
+          const { data } = await axios({
+            method: "POST",
+            url: "https://api.notion.com/v1/search",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${response.data.access_token}`,
+              "Notion-Version": "2022-02-22",
+            },
+            data: { filter: { property: "object", value: "database" } },
+          });
+
+          if (!data?.results) {
+            throw new NotFoundException('No databases found in Notion search.');
+          }
+
+          this.addSecretToSupabase(_data, response?.data?.access_token);
+          return data?.results;
+        } catch (searchError) {
+          console.error('Error during Notion search:', searchError);
+        }
+      } catch (tokenError) {
+        console.error('Error during token retrieval:', tokenError);
+      }
     } catch (error) {
-      console.error('Error during POST request:', error);
-
+      console.error('Error in fetchNotionToken:', error);
+      throw new NotFoundException('Notion token retrieval failed.');
     }
   }
+
 
   async createNotion(token: string, _data: any) {
     try {
@@ -264,272 +245,159 @@ export class AppService {
           property: "object",
           value: "database",
         },
-      })
+      });
 
       if (databases.results.length === 0) {
-        throw new Error("This bot doesn't have access to any databases!")
+        throw new Error("This bot doesn't have access to any databases!");
       }
 
-      const database = databases.results[0]
+      const database = databases.results[0];
       if (!database) {
-        throw new Error("This bot doesn't have access to any databases!")
+        throw new Error("This bot doesn't have access to any databases!");
       }
-      delete _data.token;
-      delete _data.user_id
 
       // Check if either Websites or Website is present in _data
-      if (_data.Websites || _data.Website) {
-        // Use the appropriate property based on availability
-        const websitesArray = _data.Websites || _data.Website; // Convert to array if it's a single string
+      try {
+        if (_data.Websites || _data.Website) {
+          // Use the appropriate property based on availability
+          const websitesArray = _data.Websites || _data.Website;
 
-        // Concatenate the websites array into a single string
-        _data.Websites = websitesArray.join(', ');
+          // Concatenate the websites array into a single string
+          _data.Websites = websitesArray.join(', ');
 
-        // Remove the redundant property if it exists
-        delete _data.Website;
+          // Remove the redundant property if it exists
+          delete _data.Website;
+        }
+      } catch (websitesError) {
+        console.error('Error processing websites:', websitesError);
       }
 
+      // Map data entries for formatted output
+      // const formattedData = Object.entries(_data).map(([key, value]) =>
+      //   `${key}: ${Array.isArray(value) ? value.join(", ") : value}`
+      // );
 
-      const formattedData = Object.entries(_data).map(([key, value]) => {
-        // Align keys and values by adding spaces or tabs
-        return `${key}: ${Array.isArray(value) ? value.join(", ") : value}`;
-      });
       const timestamp = Date.now();
-      const date = new Date(timestamp);
+      // const date = new Date(timestamp);
 
-      const options: any = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        timeZoneName: 'short',
-      };
+      // const options: any = {
+      //   year: 'numeric',
+      //   month: 'long',
+      //   day: 'numeric',
+      //   hour: 'numeric',
+      //   minute: 'numeric',
+      //   second: 'numeric',
+      //   timeZoneName: 'short',
+      // };
 
-      const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+      // const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
 
-      const blockId = databases.results[0].id // Blocks can be appended to other blocks *or* pages. Therefore, a page ID can be used for the block_id parameter
+      // const blockId = databases.results[0].id;
+
       const imageUrl = _data.img;
-      let profileImage
-      axios({
-        method: 'get',
-        url: imageUrl,
-        responseType: 'arraybuffer',
-      })
-        .then(async (response) => {
-          // Convert the image buffer to PNG format
-          const pngBuffer = await sharp(response.data).png().toBuffer();
-          const timestamp = new Date().getTime();
-          console.log(timestamp);
+      let profileImage;
 
-          try {
-            const { data, error } = await this.supabase.storage
-              .from('avatars')
-              .upload(`public/${timestamp}.png`, pngBuffer, { contentType: 'image/png' });
-          } catch (error) {
-            console.log(error)
-          }
-
-          const { data } = this.supabase
-            .storage
-            .from('avatars')
-            .getPublicUrl(`public/${timestamp}.png`)
-          // Now you have the Base64-encoded PNG image uploaded to Supabase storage
-          profileImage = data.publicUrl
-          const linkedTextResponse = await this.notion.pages.create({
-            parent: {
-              database_id: databases.results[0].id,
-            },
-            properties: {
-
-
-              Photo: {
-                type: 'files',
-                files: [
-                  {
-                    name: 'example.png',
-                    type: 'external',
-                    external: {
-                      url: profileImage,
-                    },
-                  },
-                ],
-              },
-              Name: {
-                title: [
-                  {
-                    text: {
-                      content: `${_data.Name}`, // Replace with your actual name
-                    },
-                  },
-                ],
-              },
-              Website: {
-                url: _data.Websites ? _data.Websites.replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details'
-              },
-              Profile: {
-                url: _data["Your Profile"][0] ? _data["Your Profile"][0] : 'No details'
-              },
-              Email: {
-                url: _data.Email && _data.Email[0] ? _data.Email[0] : 'No details'
-              },
-
-              About: {
-                rich_text: [
-                  {
-                    text: {
-                      content: _data.about,
-                    },
-                  },
-                ],
-              },
-
-              Status: {
-                select: {
-                  name: 'In Progress', // Replace with your actual status
-                },
-              },
-
-            },
-          });
-        })
-        .catch((error) => {
-          console.error('Error fetching or processing image:', error);
+      try {
+        const response = await axios({
+          method: 'get',
+          url: imageUrl,
+          responseType: 'arraybuffer',
         });
 
+        // Convert the image buffer to PNG format
+        const pngBuffer = await sharp(response.data).png().toBuffer();
+        console.log(typeof (_data.Phone[0]))
+        try {
+          const { data, error } = await this.supabase.storage
+            .from('avatars')
+            .upload(`public/${timestamp}.png`, pngBuffer, { contentType: 'image/png' });
 
+          try {
+            const { data: imageData } = await this.supabase
+              .storage
+              .from('avatars')
+              .getPublicUrl(`public/${timestamp}.png`);
 
+            // Now you have the Base64-encoded PNG image uploaded to Supabase storage
+            profileImage = imageData.publicUrl;
 
-
-
-
-
-
-    } catch (err) {
-      console.log(err)
-    } // })
-  }
-
-
-
-  async createDbInNotion(response) {
-    try {
-      this.notion = await new Client({
-        auth: 'secret_fCbj2TNEx5ZWEm1OTGgnm7y2BXVwZURdC4nPKtycM8Y',
-      });
-
-      const newDatabase = await this.notion.databases.create({
-        parent: {
-          type: "page_id",
-          page_id: "7c6e7cd74da24ea19deaaee0e23d34c3",
-        },
-        title: [
-          {
-            type: "text",
-            text: {
-              content: "LinkedIn Profiles",
-            },
-          },
-        ],
-        properties: {
-          "Your Profile": {
-            type: "title",
-            title: {},
-          },
-          "Name": {
-            type: "url",
-            url: {},
-          },
-          "Phone_Numbers": {
-            type: "url",
-            url: {},
-          },
-          "Email": {
-            type: "email",
-            email: {},
-          },
-          "Websites": {
-            type: "url",
-            url: {},
-          },
-          // Add more properties as needed based on the collected data
-        },
-      });
-
-      // // // Print the new database response
-      // // console.log(newDatabase);
-
-      // Add a few new pages to the database that was just created
-
-      // await addNotionPageToDatabase("4bcd163d5aa34e788ab33d52173fc032", response);
-    } catch (error) {
-      console.error("Error creating database:", error);
-    }
-  }
-
-  // Create a new page in the Notion database
-  async addNotionPageToDatabase(key, collectedData) {
-    try {
-      const websiteKey = collectedData.Websites
-        ? "Websites"
-        : collectedData.Website
-          ? "Website"
-          : "Unknown";
-      // Create a new page in the Notion database
-      const newPage = await this.notion.pages.create({
-        parent: {
-          database_id: key, // Replace with your Notion database ID
-        },
-
-        properties: {
-          "Profile": {
-            type: "title",
-            title: [
-              {
-                type: "text",
-                text: {
-                  content: collectedData["Your Profile"]
-                    ? collectedData["Your Profile"][0]
-                    : "Unknown",
+            try {
+              const linkedTextResponse = await this.notion.pages.create({
+                parent: {
+                  database_id: databases.results[0].id,
                 },
-              },
-            ],
-          },
-          Name: {
-            type: "url",
-            url: collectedData.Name ? collectedData.Name : "Unknown",
-          },
-          Phone_Numbers: {
-            type: "url",
-            url: collectedData.Phone ? collectedData.Phone[0] : "Unknown",
-          },
-          Email: {
-            type: "email",
-            email: collectedData.Email ? collectedData.Email[0] : "Unknown",
-          },
-          Websites: {
-            type: "url",
-            url: collectedData[websiteKey]
-              ? Array.isArray(collectedData[websiteKey])
-                ? collectedData[websiteKey].join(", ")
-                : collectedData[websiteKey].toString()
-              : "Unknown",
-          },
-
-          // Add more properties as needed based on the collected data
-        },
-      });
-
-      // console.log("New page added to Notion:", newPage);
-    } catch (error) {
-      console.error("Error adding data to Notion database:", error);
+                properties: {
+                  Photo: {
+                    type: 'files',
+                    files: [
+                      {
+                        name: 'example.png',
+                        type: 'external',
+                        external: {
+                          url: profileImage,
+                        },
+                      },
+                    ],
+                  },
+                  Name: {
+                    title: [
+                      {
+                        text: {
+                          content: `${_data.Name}`, // Replace with your actual name
+                        },
+                      },
+                    ],
+                  },
+                  Website: {
+                    url: _data.Websites ? _data.Websites.replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details',
+                  },
+                  Profile: {
+                    url: _data["Your Profile"] && _data["Your Profile"][0] ? _data["Your Profile"][0] : 'No details',
+                  },
+                  Email: {
+                    url: _data.Email && _data.Email[0] ? _data.Email[0] : 'No details',
+                  },
+                  About: {
+                    rich_text: [
+                      {
+                        text: {
+                          content: _data.about,
+                        },
+                      },
+                    ],
+                  },
+                  Phone: {
+                    rich_text: [
+                      {
+                        text: {
+                          content: _data.Phone[0] ? _data.Phone[0] : 'No details',
+                        },
+                      },
+                    ],
+                  },
+                  Status: {
+                    select: {
+                      name: 'In Progress', // Replace with your actual status
+                    },
+                  },
+                },
+              });
+            } catch (linkedTextError) {
+              console.error('Error creating Notion page with linked text:', linkedTextError);
+            }
+          } catch (imageDataError) {
+            console.error('Error getting image data from Supabase storage:', imageDataError);
+          }
+        } catch (uploadError) {
+          console.error('Error uploading image to Supabase storage:', uploadError);
+        }
+      } catch (imageError) {
+        console.error('Error fetching or processing image:', imageError);
+      }
+    } catch (err) {
+      console.error('Error in createNotion:', err);
     }
   }
-
-
-
-
 
   async getUserData(_data: any) {
     let { token, user_id } = _data.data
@@ -552,9 +420,5 @@ export class AppService {
       console.log(error)
     }
   }
-
-
-
-
 }
 
