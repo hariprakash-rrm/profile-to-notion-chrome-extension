@@ -306,7 +306,7 @@ export class AppService {
 
         // Convert the image buffer to PNG format
         const pngBuffer = await sharp(response.data).png().toBuffer();
-        console.log(typeof (_data.Phone[0]))
+       
         try {
           const { data, error } = await this.supabase.storage
             .from('avatars')
@@ -352,16 +352,16 @@ export class AppService {
                     url: _data.Websites ? _data.Websites.replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details',
                   },
                   Profile: {
-                    url: _data["Your Profile"] && _data["Your Profile"][0] ? _data["Your Profile"][0] : 'No details',
+                    url: _data["Your Profile"] && _data["Your Profile"][0] ? _data["Your Profile"][0].replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details',
                   },
                   Email: {
-                    url: _data.Email && _data.Email[0] ? _data.Email[0] : 'No details',
+                    url: _data?.Email && _data?.Email[0] ? _data.Email[0].replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details',
                   },
                   About: {
                     rich_text: [
                       {
                         text: {
-                          content: _data.about,
+                          content: _data?.about,
                         },
                       },
                     ],
@@ -370,7 +370,7 @@ export class AppService {
                     rich_text: [
                       {
                         text: {
-                          content: _data.Phone[0] ? _data.Phone[0] : 'No details',
+                          content: _data && _data.Phone && _data.Phone[0] ? _data.Phone[0].replace(/\(.*\)/g, '').replace(/\n/g, '').trim() : 'No details',
                         },
                       },
                     ],

@@ -10,7 +10,8 @@
     "alarms",
     "scripting",
     "activeTab",
-    "identity"
+    "identity",
+    "notifications"
   ],
   "oauth2": {
     "client_id": "131178090127-p9t30b3cgp260it21bohtgf334tvf59a.apps.googleusercontent.com",

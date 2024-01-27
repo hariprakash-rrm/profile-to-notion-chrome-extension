@@ -149,12 +149,24 @@ async function createDbInNotion(_data){
     },
     body: JSON.stringify(requestData)
   })
-    .then(response => response.json())
-    .then(data => {
-      console.log('API Response:', data);
+    
+    .then(async(data) => {
+     
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl:'../../assets/asdss.jpeg',
+        title: 'My Extension',
+        message: 'Profile added to notion'
+      });
       // Handle the API response here
     })
     .catch(error => {
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl:'../../assets/asdss.jpeg',
+        title: 'My Extension',
+        message: 'Something went wront'
+      });
       console.error('API Error:', error);
     });
 }
