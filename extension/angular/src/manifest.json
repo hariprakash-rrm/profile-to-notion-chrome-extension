@@ -23,9 +23,7 @@
     "default_title": "Angular Chrome Extension"
   },
   "options_page": "index.html",
-  "chrome_url_overrides": {
-    "newtab": "index.html?#/tab"
-  },
+  
   "content_scripts": [
     {
       "js": ["./chrome/src/contentPage.js"],

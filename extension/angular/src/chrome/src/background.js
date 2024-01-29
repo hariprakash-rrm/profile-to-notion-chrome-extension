@@ -1,4 +1,3 @@
-
 chrome.commands.onCommand.addListener(function (command) {
   if (command === "toggle-feature") {
     // Send a message to the background script
@@ -25,7 +24,6 @@ chrome.commands.onCommand.addListener(function (command) {
   }
 });
 
-
 // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //   console.log(request, "reqqqqqq");
 //   // Check if the received message has the expected method property
@@ -47,8 +45,6 @@ chrome.commands.onCommand.addListener(function (command) {
 //     console.error("Unexpected message:", request);
 //   }
 // });
-
-
 
 // Function to handle tab updates
 function handleTabUpdate(tabId, changeInfo, tab) {
@@ -78,7 +74,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
   if (request.method === "getStatus") {
     chrome.storage.local.set({ authData: request.authData }, function () {
       console.log("Data saved:");
@@ -114,61 +109,58 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
-  chrome.storage.local.remove(["key","id"],function(){
+  chrome.storage.local.remove(["key", "id"], function () {
     var error = chrome.runtime.lastError;
-       if (error) {
-           console.error(error);
-       }
-   })
+    if (error) {
+      console.error(error);
+    }
+  });
   // Build the extension URL with the 'code' parameter
   const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/`;
 
   // Open the extension URL in a new tab
-  chrome.tabs.create({ url: extensionURL }, function (newTab) {
-
-  });
+  chrome.tabs.create({ url: extensionURL }, function (newTab) {});
 });
 
+async function createDbInNotion(_data) {
+  console.log("working = = =", _data);
 
-async function createDbInNotion(_data){
-  console.log('working = = =', _data)
+  // Replace 'http://localhost:3000/add-data' with the actual API endpoint
+  const apiUrl = "http://localhost:3000/add-data";
 
-   // Replace 'https://api.example.com/endpoint' with the actual API endpoint
-  const apiUrl = 'http://localhost:3000/add-data';
-
-  // Example data to send in the body
-  const requestData = {
-    data:_data
-  };
-
-  fetch(apiUrl, {
-    method: 'POST', // or 'PUT', 'DELETE', etc.
-    headers: {
-      'Content-Type': 'application/json',
-      // Add any other headers if needed
-    },
-    body: JSON.stringify(requestData)
-  })
-    
-    .then(async(data) => {
-     
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST", // or 'PUT', 'DELETE', etc.
+      headers: {
+        "Content-Type": "application/json",
+        // Add any other headers if needed
+      },
+      body: JSON.stringify({ data: _data }),
+    });
+    console.log(response);
+    if (response.ok) {
       chrome.notifications.create({
-        type: 'basic',
-        iconUrl:'../../assets/asdss.jpeg',
-        title: 'My Extension',
-        message: 'Profile added to notion'
+        type: "basic",
+        iconUrl: "../../assets/asdss.jpeg",
+        title: "My Extension",
+        message: "Profile added to Notion",
       });
       // Handle the API response here
-    })
-    .catch(error => {
+    } else {
       chrome.notifications.create({
-        type: 'basic',
-        iconUrl:'../../assets/asdss.jpeg',
-        title: 'My Extension',
-        message: 'Something went wront'
+        type: "basic",
+        iconUrl: "../../assets/asdss.jpeg",
+        title: "My Extension",
+        message: `Failed to add profile to Notion: ${response.status} - ${response.statusText}`,
       });
-      console.error('API Error:', error);
+    }
+  } catch (error) {
+    chrome.notifications.create({
+      type: "basic",
+      iconUrl: "../../assets/asdss.jpeg",
+      title: "My Extension",
+      message: "Something went wrong",
     });
+    console.error("Error:", error.message);
+  }
 }
-
-

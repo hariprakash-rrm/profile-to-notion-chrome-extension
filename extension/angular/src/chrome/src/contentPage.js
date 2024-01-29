@@ -1,6 +1,7 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   new Promise(async (resolve, reject) => {
     try {
+      addCustomButton()
       if (!request) {
         throw new Error("Request is empty.");
       }
@@ -164,3 +165,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // Important: Return true to indicate that you will respond asynchronously
   return true;
 });
+
+
+// content.js
+
+function addCustomButton() {
+
+  console.log('Script loaded ')
+  const button = document.createElement('button');
+  button.innerHTML = 'Custom Button';
+  button.addEventListener('click', function () {
+    // Your custom logic when the button is clicked
+    alert('Button clicked!');
+  });
+
+  // Find the LinkedIn profile's action bar (where the Connect button is)
+  const actionBar = document.querySelector('.pv-s-profile-actions');
+  if (actionBar) {
+    actionBar.appendChild(button);
+  }
+}
+
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', addCustomButton);

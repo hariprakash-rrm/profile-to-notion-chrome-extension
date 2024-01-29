@@ -148,9 +148,9 @@ export class AppService {
 
   async getCodeDetails(_data) {
     try {
-      let { code, token, user_id } = _data;
+      let { token, user_id } = _data;
 
-      if (!code || !token || !user_id) {
+      if (!token || !user_id) {
         throw new Error('Invalid input data. Please provide code, token, and user_id.');
       }
 
@@ -234,7 +234,7 @@ export class AppService {
   }
 
 
-  async createNotion(token: string, _data: any) {
+  async createNotion(token: string, _data: any): Promise<any> {
     try {
       this.notion = await new Client({
         auth: token,
@@ -248,12 +248,12 @@ export class AppService {
       });
 
       if (databases.results.length === 0) {
-        throw new Error("This bot doesn't have access to any databases!");
+        throw new NotAcceptableException("This bot doesn't have access to any databases!");
       }
 
       const database = databases.results[0];
       if (!database) {
-        throw new Error("This bot doesn't have access to any databases!");
+        throw new NotAcceptableException("This bot doesn't have access to any databases!");
       }
 
       // Check if either Websites or Website is present in _data
@@ -306,7 +306,7 @@ export class AppService {
 
         // Convert the image buffer to PNG format
         const pngBuffer = await sharp(response.data).png().toBuffer();
-       
+
         try {
           const { data, error } = await this.supabase.storage
             .from('avatars')
@@ -382,6 +382,8 @@ export class AppService {
                   },
                 },
               });
+
+              return linkedTextResponse
             } catch (linkedTextError) {
               console.error('Error creating Notion page with linked text:', linkedTextError);
             }
@@ -395,11 +397,12 @@ export class AppService {
         console.error('Error fetching or processing image:', imageError);
       }
     } catch (err) {
-      console.error('Error in createNotion:', err);
+      throw new NotAcceptableException('Error in create data')
+
     }
   }
 
-  async getUserData(_data: any) {
+  async getUserData(_data: any): Promise<any> {
     let { token, user_id } = _data.data
 
     let secret = ''
@@ -411,13 +414,13 @@ export class AppService {
       if (data) {
         secret = data[0].secret
         console.log(secret)
-        this.createNotion(secret, _data.data)
+        return await this.createNotion(secret, _data.data)
       } else {
-        console.log(error)
+        throw new NotAcceptableException(Error)
       }
 
     } catch (error) {
-      console.log(error)
+      throw new NotAcceptableException(Error)
     }
   }
 }

@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: 'tab.component.html',
   styleUrls: ['tab.component.scss']
 })
-export class TabComponent {}
+export class TabComponent {
+  isdeveloper = true;
+}
