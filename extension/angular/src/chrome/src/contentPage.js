@@ -93,10 +93,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Check if the element is found
         if (_element) {
           // Log the text content
-          console.log(_element.textContent.trim());
+          // console.log(_element.textContent.trim());
           contactInfo.about = _element.textContent.trim();
         } else {
-          console.log("Element not found");
+          // console.log("Element not found");
         }
 
         const photoWrapper = document.querySelector(
@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         );
 
         // Log the src attribute
-        console.log("test", imgTag);
+        // console.log("test", imgTag);
         if (imgTag) {
           // Get the src attribute
           let _imgSrc = imgTag.getAttribute("src");
@@ -123,13 +123,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             // Check if the image element is found
             if (imgElement) {
               // Log the src attribute
-              console.log(imgElement.getAttribute("src"));
+              // console.log(imgElement.getAttribute("src"));
               contactInfo["img"] = imgElement.getAttribute("src");
             } else {
-              console.log("Image element not found within the container");
+              // console.log("Image element not found within the container");
             }
           } else {
-            console.log("Container element not found");
+            // console.log("Container element not found");
           }
 
           return contactInfo;
@@ -138,22 +138,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       // Example usage
       const collectedData = await collectHtmlData();
-      console.log(collectedData);
+      // console.log(collectedData);
 
       const userData = await handleContactInfo();
-      console.log("User data:", userData);
+      // console.log("User data:", userData);
 
       chrome.storage.local.get(["gAuth"]).then((result) => {
-        console.log("Value currently is " + result);
+        // console.log("Value currently is " + result);
         userData.token = result.gAuth;
       });
       chrome.storage.local.get(["user_id"]).then((result) => {
-        console.log("Value currently is " + result);
+        // console.log("Value currently is " + result);
         userData.user_id = result.user_id;
         resolve(userData);
       });
     } catch (error) {
-      console.error(error.message || "Something went wrong.");
+      // console.error(error.message || "Something went wrong.");
 
       // Signal that an error occurred
       reject({ success: false, error: error.message });
@@ -171,7 +171,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function addCustomButton() {
 
-  console.log('Script loaded ')
+  // console.log('Script loaded ')
   const button = document.createElement('button');
   button.innerHTML = 'Custom Button';
   button.addEventListener('click', function () {

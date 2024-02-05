@@ -7,7 +7,7 @@
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
     </a>
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-      <button *ngIf="isLogin" (click)="signout()" type="button"
+      <button *ngIf="isLogin && isNotionLoggedIn" (click)="signout()" type="button"
         class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
         <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
           viewBox="0 0 18 19">
@@ -18,7 +18,7 @@
         Sign Out
       </button>
 
-      <button *ngIf="!isLogin" (click)="signInWithGoogle()" type="button"
+      <!-- <button *ngIf="!isLogin" (click)="signInWithGoogle()" type="button"
         class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
         <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
           viewBox="0 0 18 19">
@@ -32,7 +32,7 @@
         class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         style="display: block" [href]="connectToNotion()">
         Connect to Notion
-      </a>
+      </a> -->
 
       <button data-collapse-toggle="navbar-cta" type="button"
         class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -69,6 +69,57 @@
   </div>
 </nav>
 
+<section class="font-sans">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center h-screen">
+    <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+      <h1 class="title-font xl:text-4xl md:text-3xl text-2xl mb-4 font-medium text-gray-900">Before they sold out
+        <br class="hidden lg:inline-block">readymade gluten
+      </h1>
+      <p class="mb-8 leading-relaxed">Copper mug try-hard pitchfork pour-over freegan heirloom neutra air plant cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk tote bag selvage hot chicken authentic tumeric truffaut hexagon try-hard chambray.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start
+       w-full">
+        <button *ngIf="!isLogin" (click)="signInWithGoogle()"  class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button>
+        <a *ngIf="!isNotionLoggedIn && isLogin" [href]="connectToNotion()" class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</a>
+      </div>
+      
+
+      <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
+        <!-- completed state -->
+        <li class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+          <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
+            <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isLogin">
+              <span class="text-white">✔</span>
+            </span>
+            <span *ngIf="!isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
+          </span>
+        </li>
+        <!-- current state -->
+        <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+          <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
+            <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isNotionLoggedIn">
+              <span class="text-white">✔</span>
+            </span>
+            <span *ngIf="!isNotionLoggedIn || !isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
+          </span>
+        </li>
+        <li>
+          You are ready to go
+        </li>
+      </ol>
+      
+      
+      
+      
+      
+      
+
+    </div>
+    <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 hidden md:block">
+      <img class="object-cover object-center rounded" alt="hero" src="https://e0.pxfuel.com/wallpapers/90/1010/desktop-wallpaper-how-to-reverse-engineer-who-s-viewed-your-profile-on-linkedin-to-linkedin-business.jpg">
+    </div>
+  </div>
+</section>
+
 
 
 
@@ -95,42 +146,3 @@
   </div>
 </footer>
 
-<section class="font-sans">
-  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center h-screen">
-    <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-      <h1 class="title-font xl:text-4xl md:text-3xl text-2xl mb-4 font-medium text-gray-900">Before they sold out
-        <br class="hidden lg:inline-block">readymade gluten
-      </h1>
-      <p class="mb-8 leading-relaxed">Copper mug try-hard pitchfork pour-over freegan heirloom neutra air plant cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk tote bag selvage hot chicken authentic tumeric truffaut hexagon try-hard chambray.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start
-       w-full">
-        <button class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button>
-        <button class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</button>
-      </div>
-      
-
-      <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-        <!-- completed state -->
-        <li class="flex md:w-full items-center  sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-                <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white bg-indigo-600 border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
-            </span>
-        </li>
-        <!-- current state -->
-        <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-                <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-indigo-500 border border-solid border-indigo-700 ring-1 rounded-full flex items-center justify-center">2</span>
-            </span>
-        </li>
-        <!-- normal state -->
-        <li class="flex items-center">
-          <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">3</span>
-        </li>
-      </ol>
-
-    </div>
-    <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 hidden md:block">
-      <img class="object-cover object-center rounded" alt="hero" src="assets/banner.svg">
-    </div>
-  </div>
-</section>

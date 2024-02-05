@@ -9,23 +9,23 @@ chrome.commands.onCommand.addListener(function (command) {
           { action: "toggleSidebarhkey" },
           function (response) {
             if (chrome.runtime.lastError) {
-              console.error("Error sending message:", chrome.runtime.lastError);
+              // console.error("Error sending message:", chrome.runtime.lastError);
             } else {
-              console.log("Message sent successfully:", response);
+              // console.log("Message sent successfully:", response);
               createDbInNotion(response);
             }
           }
         );
         // chrome.runtime.openOptionsPage();
       } else {
-        console.error("No active tabs found.");
+        // console.error("No active tabs found.");
       }
     });
   }
 });
 
 // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   console.log(request, "reqqqqqq");
+//   // console.log(request, "reqqqqqq");
 //   // Check if the received message has the expected method property
 //   if (request && request.method === "get") {
 //     // Perform the desired actions based on the received message
@@ -37,19 +37,19 @@ chrome.commands.onCommand.addListener(function (command) {
 //     sendResponse(responseData);
 
 //     // Log the received message
-//     console.log("Received message:", request);
+//     // console.log("Received message:", request);
 
 //     // You can also handle the message further as needed
 //   } else {
 //     // Handle unexpected or unhandled messages
-//     console.error("Unexpected message:", request);
+//     // console.error("Unexpected message:", request);
 //   }
 // });
 
 // Function to handle tab updates
 function handleTabUpdate(tabId, changeInfo, tab) {
   if (changeInfo.url) {
-    console.log("Tab updated. New URL:", changeInfo.url);
+    // console.log("Tab updated. New URL:", changeInfo.url);
 
     // Check if the new URL contains 'http://localhost:4200/?code='
     if (changeInfo.url.includes("http://localhost:4200/?code=")) {
@@ -76,7 +76,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.method === "getStatus") {
     chrome.storage.local.set({ authData: request.authData }, function () {
-      console.log("Data saved:");
+      // console.log("Data saved:");
     });
     // Use a Promise to handle asynchronous chrome.storage.local.get
     const getStatusPromise = new Promise((resolve, reject) => {
@@ -95,7 +95,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse(result);
       })
       .catch((error) => {
-        console.error("Error during getStatus:", error);
+        // console.error("Error during getStatus:", error);
         // You might want to send an error response back to the sender
         sendResponse({ error: "Failed to get status" });
       });
@@ -112,7 +112,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
   chrome.storage.local.remove(["key", "id"], function () {
     var error = chrome.runtime.lastError;
     if (error) {
-      console.error(error);
+      // console.error(error);
     }
   });
   // Build the extension URL with the 'code' parameter
@@ -123,10 +123,10 @@ chrome.runtime.onInstalled.addListener(function (details) {
 });
 
 async function createDbInNotion(_data) {
-  console.log("working = = =", _data);
+  // console.log("working = = =", _data);
 
   // Replace 'http://localhost:3000/add-data' with the actual API endpoint
-  const apiUrl = "http://localhost:3000/add-data";
+  const apiUrl = "https://notion-backend-cvzk.onrender.com/add-data";
 
   try {
     const response = await fetch(apiUrl, {
@@ -137,7 +137,7 @@ async function createDbInNotion(_data) {
       },
       body: JSON.stringify({ data: _data }),
     });
-    console.log(response);
+    // console.log(response);
     if (response.ok) {
       chrome.notifications.create({
         type: "basic",
@@ -161,6 +161,6 @@ async function createDbInNotion(_data) {
       title: "My Extension",
       message: "Something went wrong",
     });
-    console.error("Error:", error.message);
+    // console.error("Error:", error.message);
   }
 }
