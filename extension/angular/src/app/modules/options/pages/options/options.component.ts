@@ -1,10 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { createClient } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/modules/auth.service';
 import { environment } from 'src/environments/environment';
 
 import { TAB_ID } from 'src/app/providers/tab-id.provider';
-const supabase = createClient(environment.supabase.url, environment.supabase.key);
+
 
 @Component({
   selector: 'app-options',

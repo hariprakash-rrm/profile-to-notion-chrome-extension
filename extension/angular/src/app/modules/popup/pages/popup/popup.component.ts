@@ -1,9 +1,7 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { bindCallback } from 'rxjs';
-import { map } from 'rxjs/operators';
+
 import { TAB_ID } from '../../../../providers/tab-id.provider';
 import { AuthService } from 'src/app/modules/auth.service';
-import axios from 'axios';
 @Component({
   selector: 'app-popup',
   templateUrl: 'popup.component.html',

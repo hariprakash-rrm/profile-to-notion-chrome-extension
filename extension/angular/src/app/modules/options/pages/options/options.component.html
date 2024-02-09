@@ -102,8 +102,14 @@
             <span *ngIf="!isNotionLoggedIn || !isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
           </span>
         </li>
-        <li>
+        <li *ngIf="isNotionLoggedIn && isLogin">
           You are ready to go
+        </li>
+        <li *ngIf="!isLogin">
+         Login with google
+        </li>
+        <li *ngIf="!isNotionLoggedIn && isLogin">
+          Login with notion
         </li>
       </ol>
       
