@@ -1,28 +1,36 @@
-chrome.commands.onCommand.addListener(function (command) {
+
+
+chrome.commands.onCommand.addListener(function(command) {
+  console.log(command);
   if (command === "toggle-feature") {
-    // Send a message to the background script
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      if (tabs && tabs.length > 0) {
-        const tabId = tabs[0].id;
-        chrome.tabs.sendMessage(
-          tabId,
-          { action: "toggleSidebarhkey" },
-          function (response) {
-            if (chrome.runtime.lastError) {
-              // console.error("Error sending message:", chrome.runtime.lastError);
-            } else {
-              // console.log("Message sent successfully:", response);
-              createDbInNotion(response);
-            }
-          }
-        );
-        // chrome.runtime.openOptionsPage();
-      } else {
-        // console.error("No active tabs found.");
-      }
-    });
+    sendMessageToContentScript();
   }
 });
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  console.log('message', message);
+  if (message.command === "toggle-feature") {
+    sendMessageToContentScript();
+  }
+});
+
+function sendMessageToContentScript() {
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    if (tabs && tabs.length > 0) {
+      const tabId = tabs[0].id;
+      chrome.tabs.sendMessage(tabId, {command: "contact"}, function(response) {
+        if (chrome.runtime.lastError) {
+          console.error("Error sending message:", chrome.runtime.lastError);
+        } else {
+          createDbInNotion(response);
+        }
+      });
+    } else {
+      console.error("No active tabs found.");
+    }
+  });
+}
+
 
 // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //   // console.log(request, "reqqqqqq");
@@ -48,9 +56,27 @@ chrome.commands.onCommand.addListener(function (command) {
 
 // Function to handle tab updates
 function handleTabUpdate(tabId, changeInfo, tab) {
+
+  if(changeInfo.url){
+    if(changeInfo.url.includes('https://www.linkedin.com/in')){
+      console.log('triggererd')
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        // Ensure there's at least one tab
+        if (tabs.length > 0) {
+          // Get the tab ID
+          let tabId = tabs[0].id;
+          
+          // Send a message to the content script
+          chrome.tabs.sendMessage(tabId, {command: "url"});
+        } else {
+          console.error("No active tab found.");
+        }
+      });
+    }
+  }
   if (changeInfo.url) {
     // console.log("Tab updated. New URL:", changeInfo.url);
-
+   
     // Check if the new URL contains 'http://localhost:4200/?code='
     if (changeInfo.url.includes("http://localhost:4200/?code=")) {
       // Extract the 'code' parameter from the URL

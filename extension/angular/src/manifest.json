@@ -1,9 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "test1",
-  "short_name": "test1",
+  "name": "ProfileToNotion",
+  "short_name": "pTn",
   "version": "1.0.0",
   "description": "Generated with @larscom/ng-chrome-extension",
+  "icons": {
+    "48": "assets/logo.jpeg",
+    "96": "assets/logo.jpeg",
+    "144": "assets/logo.jpeg",
+    "192": "assets/logo.jpeg"
+  },
+
+  
   "permissions": [
     "tabs",
     "storage",
@@ -12,6 +20,7 @@
     "identity",
     "notifications"
   ],
+  
   "oauth2": {
     "client_id": "131178090127-p9t30b3cgp260it21bohtgf334tvf59a.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
@@ -19,7 +28,11 @@
   "host_permissions": ["https://www.linkedin.com/*", "https://api.notion.com/"],
   "action": {
     "default_popup": "index.html?#/popup",
-    "default_title": "Angular Chrome Extension"
+    "default_title": "Angular Chrome Extension",
+    "default_icon": {
+      "16": "assets/logo.jpeg",
+      "32": "assets/logo.jpeg"
+    }
   },
   "options_page": "index.html",
   

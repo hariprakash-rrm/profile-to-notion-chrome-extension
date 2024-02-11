@@ -1,7 +1,9 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if(request.command != "contact"){
+    return
+  }
   new Promise(async (resolve, reject) => {
     try {
-      addCustomButton()
       if (!request) {
         throw new Error("Request is empty.");
       }
@@ -166,25 +168,56 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
-
 // content.js
 
 function addCustomButton() {
+  let parentDiv = document.querySelector(".pv-top-card-v2-ctas");
 
-  // console.log('Script loaded ')
-  const button = document.createElement('button');
-  button.innerHTML = 'Custom Button';
-  button.addEventListener('click', function () {
-    // Your custom logic when the button is clicked
-    alert('Button clicked!');
-  });
+  // Check if the parent div exists and a button with desired text content does not already exist
+  if (parentDiv && !parentDiv.querySelector("button[data-action='copy-to-notion']")) {
+    // Create a button element
+    let button = document.createElement("button");
 
-  // Find the LinkedIn profile's action bar (where the Connect button is)
-  const actionBar = document.querySelector('.pv-s-profile-actions');
-  if (actionBar) {
-    actionBar.appendChild(button);
-  }
+    // Set button attributes or properties
+    button.textContent = "Copy to notion";
+    button.setAttribute("data-action", "copy-to-notion");
+    button.style.width = "33%";
+    button.style.textAlign = "center";
+    button.style.fontSize = "1rem";
+    button.style.color = "#ffffff";
+    button.style.backgroundColor = "#6c63ff";
+    button.style.border = "none";
+    button.style.padding = "0.5rem 1.5rem";
+    button.style.outline = "none";
+
+    // Add hover effect
+    button.addEventListener("mouseover", function () {
+      button.style.backgroundColor = "#4f46e5";
+    });
+    button.addEventListener("mouseout", function () {
+      button.style.backgroundColor = "#6c63ff";
+    });
+
+    // Add an event listener to handle button click
+    button.addEventListener("click", function () {
+      // Add your logic for button click event here
+      console.log("Button clicked!");
+      chrome.runtime.sendMessage({ command: "toggle-feature" });
+    });
+
+    // Append the button to the parent div
+    parentDiv.appendChild(button);
+  } 
+
+  // Send a message to the background script to trigger the command
 }
 
-// Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', addCustomButton);
+
+
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  console.log('message', message);
+  if (message.command === "url") {
+    addCustomButton();
+  }
+});
