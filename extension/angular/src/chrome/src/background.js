@@ -83,7 +83,7 @@ function handleTabUpdate(tabId, changeInfo, tab) {
       const codeParam = new URL(changeInfo.url).searchParams.get("code");
 
       // Build the extension URL with the 'code' parameter
-      const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/?code=${codeParam}`;
+      const extensionURL = `chrome-extension://gbhfaddgflgmmimdplefmnhcejfiohbk/index.html#/?code=${codeParam}`;
 
       // Open the extension URL in a new tab
       chrome.tabs.create({ url: extensionURL }, function (newTab) {
@@ -142,7 +142,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
   });
   // Build the extension URL with the 'code' parameter
-  const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/`;
+  const extensionURL = `chrome-extension://gbhfaddgflgmmimdplefmnhcejfiohbk/index.html#/`;
 
   // Open the extension URL in a new tab
   chrome.tabs.create({ url: extensionURL }, function (newTab) {});

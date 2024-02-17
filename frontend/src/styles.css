@@ -1,1 +1,108 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.animated-background-wrap {
+    width: 100%;
+    height: 100%;
+  border: 1px solid rgba( 255, 255, 255, 0.18 ); 
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  .animated-background-wrap::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+   /* background: rgba( 0, 0, 0, 0.1 ); */
+  /* -webkit-box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+          box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
+  backdrop-filter: blur( 40px );
+  -webkit-backdrop-filter: blur( 40px );
+  border-radius: 10px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+  
+  .shape {
+    position: absolute;
+    z-index: -2;
+  }
+  
+  /* .shape1 {
+    height: 200px;
+    width: 200px;
+    left: 70%;
+    top: 25%;
+    border-radius: 100%;
+  background: -webkit-gradient(linear, left top, right top, from(#ff9a9d83), color-stop(99%,  #fad0c469), to(#fad0c46c));
+  background: -o-linear-gradient(left, #ff9a9d83 0%,  #ff9a9d83 99%, #fad0c46c 100%);
+  background: linear-gradient(45deg, #ff9a9d83 0%,  #ff9a9d83 99%, #fad0c46c 100%);
+  }
+  
+  .shape2 {
+    height: 400px;
+    width: 400px;
+  background: -webkit-gradient(linear, left top, right top, from(#9efbd373), color-stop(48%, #57eaf24f), to(#45d4fb42));
+  background: -o-linear-gradient(left, #9efbd373 0%, #57eaf24f 48%, #45d4fb42 100%);
+  background: linear-gradient(90deg, #9efbd373 0%, #57eaf24f 48%, #45d4fb42 100%);
+    -webkit-animation: shape2 10s ease 0s infinite alternate;
+            animation: shape2 10s ease 0s infinite alternate;
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+    border-radius: 79% 21% 70% 30% / 30% 30% 70% 70% ;
+  }
+  
+  .shape3 {
+    height: 200px;
+    width: 200px;
+    background: rgb(250,255,54);
+  background: -webkit-gradient(linear, left top, right top, from(#dfffcd63 ), color-stop(35%, #90f9c480), to(#39f3bb3f));
+  background: -o-linear-gradient(left, #dfffcd63  0%, #90f9c480 35%, #39f3bb3f 100%);
+  background: linear-gradient(90deg, #dfffcd63  0%, #90f9c480 35%, #39f3bb3f 100%);
+    -webkit-animation: shape3 10s ease 0s infinite alternate;
+            animation: shape3 10s ease 0s infinite alternate;
+    border-radius: 5% 95% 18% 82% / 82% 86% 14% 18% ;
+  } */
+  
+  @-webkit-keyframes shape1 {
+    0%   {left:20px; top:-20%;}
+    50%  {left:0; top:0;border-radius: 21% 79% 18% 82% / 82% 30% 70% 18%  ;}
+    100% {left:20px; top:-20%;}
+  }
+  
+  @keyframes shape1 {
+    0%   {left:20px; top:-20%;}
+    50%  {left:0; top:0;border-radius: 21% 79% 18% 82% / 82% 30% 70% 18%  ;}
+    100% {left:20px; top:-20%;}
+  }
+  
+  @-webkit-keyframes shape2 {
+    0%   {left:0; top:-20%;width:300px;height:300px;}
+    50%  {left:200px; top:100px;border-radius: 21% 79% 18% 82% / 82% 30% 70% 18%  ;width:400px;height:400px;}
+    100% {left:0; top:-20%;width:300px;height:300px;}
+  }
+  
+  @keyframes shape2 {
+    0%   {left:0; top:-20%;width:300px;height:300px;}
+    50%  {left:200px; top:100px;border-radius: 21% 79% 18% 82% / 82% 30% 70% 18%  ;width:400px;height:400px;}
+    100% {left:0; top:-20%;width:300px;height:300px;}
+  }
+  
+  @-webkit-keyframes shape3 {
+    0%   {right:0; bottom:-20%;}
+    50%  {right:50px; bottom:150px;border-radius: 21% 79% 18% 82% / 82% 30% 70% 18%  ;}
+    100% {right:0; bottom:-20%;}
+  }

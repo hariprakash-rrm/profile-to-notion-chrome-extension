@@ -62,7 +62,7 @@ export class PopupComponent implements OnInit {
     }
 
     createTab(){
-    let extensionURL = 'chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/'
+    let extensionURL = 'chrome-extension://gbhfaddgflgmmimdplefmnhcejfiohbk/index.html#/'
       chrome.tabs.create({ url: extensionURL }, function (newTab) {
         // Close the tab with the old URL
         // chrome.tabs.remove(tabId);
