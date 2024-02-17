@@ -377,7 +377,7 @@ export class AppService {
                   },
                   Status: {
                     select: {
-                      name: 'In Progress', // Replace with your actual status
+                      name: 'Not started', // Replace with your actual status
                     },
                   },
                 },

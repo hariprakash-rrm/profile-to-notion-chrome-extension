@@ -21,7 +21,7 @@ export class AuthService {
   isNotion = this.isNotionLoginSubject.asObservable()
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
-this.connectToNotion()
+    this.connectToNotion()
   }
   ngOnInit() {
     this.setLoadingStatus(true)
@@ -31,7 +31,7 @@ this.connectToNotion()
       this.localData = JSON.parse(this.localData)
       this.getNotionCode()
       this.signInWithGoogle()
-    }else{
+    } else {
       this.setLoadingStatus(false)
     }
   }
@@ -85,15 +85,15 @@ this.connectToNotion()
             this.addGoogleTokenToSupabase()
             this.route.queryParams.subscribe(params => {
               // Access and log the 'code' parameter
-              let codeParam = params['code'] ? params['code']:null;
+              let codeParam = params['code'] ? params['code'] : null;
               console.log('Code parameter:', codeParam);
               if (codeParam) {
                 this.addNotionTokenToSupabase();
               }
             });
-            
+
           }
-          this.setLoadingStatus(false)
+
           this.setLoginStatus(true);
           return true;
         } else {
@@ -116,10 +116,13 @@ this.connectToNotion()
   async getNotionCode() {
     let postData = this.getPostData()
     console.log(postData)
+
     this.http.post(`${environment.base_url}code`, postData).subscribe((res: any) => {
-      if(res){
+      if (res) {
         this.isNotionLoginSubject.next(true)
+
       }
+      this.setLoadingStatus(false)
     })
   }
 
@@ -131,21 +134,24 @@ this.connectToNotion()
       this.http.post(`${environment.base_url}add-google-token-to-supabase`, postData).subscribe((res: any) => {
         console.log(res)
         chrome.storage.local.set({ gAuth: postData.token }).then(() => {
-          console.log("Value is set",postData.token);
+          console.log("Value is set", postData.token);
         });
         chrome.storage.local.set({ user_id: postData.user_id }).then(() => {
-          console.log("Value is set",postData.user_id);
+          console.log("Value is set", postData.user_id);
         });
-        
+
         this.setLoginStatus(true);
+        this.setLoadingStatus(false)
       })
     } catch (error) {
       // Handle errors
       console.error("Error:", error);
+      this.setLoadingStatus(false)
     }
   }
 
   async addNotionTokenToSupabase() {
+    this.setLoadingStatus(true)
     try {
 
       let postData = this.getPostData()
@@ -158,10 +164,12 @@ this.connectToNotion()
           this.isNotionLoginSubject.next(true)
         }
         this.setLoginStatus(true);
+        this.setLoadingStatus(false)
       })
     } catch (error) {
       // Handle errors
       console.error("Error:", error);
+      this.setLoadingStatus(false)
     }
   }
 
@@ -182,7 +190,6 @@ this.connectToNotion()
 
   }
 
-
   setLoginStatus(status: boolean) {
     this.isLoginSubject.next(status);
   }
@@ -192,9 +199,9 @@ this.connectToNotion()
   }
 
   connectToNotion(): string {
-		const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
-		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
-	}
+    const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
+    return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
+  }
 
   async getUserInfo(idToken) {
 
@@ -209,6 +216,12 @@ this.connectToNotion()
       window.location.reload()
     })
     console.log(error)
+    // chrome.storage.local.remove(["gAUth","user_id"],function(){
+    //   var error = chrome.runtime.lastError;
+    //      if (error) {
+    //          console.error(error);
+    //      }
+    //  })
 
   }
 }

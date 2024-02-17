@@ -173,19 +173,27 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function addCustomButton() {
   let parentDiv = document.querySelector(".pv-top-card-v2-ctas");
 
-  // Check if the parent div exists and a button with desired text content does not already exist
-  if (parentDiv && !parentDiv.querySelector("button[data-action='copy-to-notion']")) {
-    // Create a button element
+  // Check if the parent div exists
+  if (parentDiv) {
+    let existingButton = parentDiv.querySelector("button[data-action='copy-to-notion']");
+    
+    // Remove existing button if it exists
+    if (existingButton) {
+      existingButton.remove();
+    }
+
+    // Create a new button element
     let button = document.createElement("button");
 
     // Set button attributes or properties
     button.textContent = "Copy to notion";
     button.setAttribute("data-action", "copy-to-notion");
-    button.style.width = "33%";
+    button.style.width = "24%";
+    button.style.borderRadius = "20px";
     button.style.textAlign = "center";
-    button.style.fontSize = "1rem";
+    button.style.fontSize = "1.4rem";
     button.style.color = "#ffffff";
-    button.style.backgroundColor = "#6c63ff";
+    button.style.backgroundColor = "rgb(54 54 54)";
     button.style.border = "none";
     button.style.padding = "0.5rem 1.5rem";
     button.style.outline = "none";
@@ -208,9 +216,8 @@ function addCustomButton() {
     // Append the button to the parent div
     parentDiv.appendChild(button);
   } 
-
-  // Send a message to the background script to trigger the command
 }
+
 
 
 
