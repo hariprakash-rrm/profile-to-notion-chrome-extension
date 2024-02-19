@@ -57,7 +57,6 @@ export class AppComponent implements OnInit {
 		this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
 			this.isLogin = await status;
 			this.loading = false;
-			console.log(status, this.loading, 'status');
 		});
 
 
@@ -67,7 +66,6 @@ export class AppComponent implements OnInit {
 		this.loading = true;
 		try {
 			const res: boolean = await this.authService.signInWithGoogle();
-			console.log(this.loading, res, 'signinwithgoogle');
 		} finally {
 			this.loading = false;
 		}

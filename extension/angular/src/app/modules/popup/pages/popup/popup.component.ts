@@ -26,13 +26,11 @@ export class PopupComponent implements OnInit {
   
       this.isLoginObservable = this.authService.isLogin$.subscribe(async (status: boolean) => {
         this.isLogin = await status;
-        console.log(status, this.loading, 'status');
       });
   
   
       this.isLoginObservable = this.authService.isLOading$.subscribe(async (status: boolean) => {
         this.loading = status;
-        console.log(status, 'loading');
       });
   
       this.isLoginObservable = this.authService.isNotion.subscribe(async(status:boolean)=>{
@@ -45,7 +43,6 @@ export class PopupComponent implements OnInit {
   
       try {
         const res: boolean = await this.authService.signInWithGoogle();
-        console.log(this.loading, res, 'signinwithgoogle');
       } finally {
         this.loading = false;
       }

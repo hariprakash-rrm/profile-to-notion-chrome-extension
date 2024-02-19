@@ -1,4 +1,4 @@
-<div class=" h-screen">
+<div class="">
 
   <header
     class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-xl lg:container">
@@ -26,100 +26,77 @@
       </div>
     </div>
   </header>
+  <section class="relative flex items-center w-full px-5 lg:py-36 h-screen"
+      style="background: url('assets/marketing-shape.png'); backdrop-filter: blur(6px); border-radius: 2rem; background-repeat: no-repeat;"
+      id="home">
+      <div class="container relative mx-auto">
+          <div class="grid grid-cols-12 mt-10 items-center gap-4 md:gap-6 lg:gap-[30px]">
+              <div class="col-span-12 md:col-span-8 lg:col-span-7">
+                  <p
+                      class="!mb-8 w-32 flex items-center justify-center bg-gray-100 shadow-[0 0 3px rgba(60,72,88,0.15)] inline-block text-[#121212] text-sm font-semibold px-2.5 py-1 rounded h-5">
+                      Profile to Notion</p>
 
-  <section class="font-sans h-[calc(100vh - 100px)]">
-    <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-      <div
-        class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-        <h1 class="title-font xl:text-4xl md:text-3xl text-2xl mb-4 font-medium text-gray-900">fhgfhgfhfhf
-          <br class="hidden lg:inline-block">readymade gluten
-        </h1>
-        <p class="mb-8 leading-relaxed">Copper mug try-hard pitchfork pour-over freegan heirloom neutra air plant
-          cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk tote bag selvage hot chicken authentic
-          tumeric truffaut hexagon try-hard chambray.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start
-       w-full">
-          <button *ngIf="!isLogin" (click)="signInWithGoogle()"
-            class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign
-            in with Google</button>
-          <a *ngIf="!isNotionLoggedIn && isLogin" [href]="connectToNotion()"
-            class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect
-            to Notion</a>
-        </div>
+                  <div id="two" class="bg-transparent">
+                      <div class="box">
+                          <ul>
+                              <li
+                                  class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                                  Cutdown Lead Generation Times in Half</li>
+                              <li
+                                  class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                                  You lead generation copilot</li>
+                              <li
+                                  class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                                  Bring Online Profiles to Notion</li>
+                              <li
+                                  class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                                  Build Notion Databases with a click</li>
+                          </ul>
+                      </div>
+                  </div>
 
+                  <p class="text-[#6e6e73] text-xs sm:text-sm md:text-base lg:text-lg max-w-xl">A plugin anyone can use to import any online profile to
+                      your Notion database. Eliminate mundane data entry tasks with a few clicks. Built for small
+                      teams to run businesses at scale. </p>
 
-        <ol
-          class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-          <!-- completed state -->
-          <li
-            class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-            <span
-              class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-              <span
-                class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center"
-                *ngIf="isLogin">
-                <span class="text-white">✔</span>
-              </span>
-              <span *ngIf="!isLogin"
-                class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
-            </span>
-          </li>
-          <!-- current state -->
-          <li
-            class="flex  md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-            <span
-              class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-              <span
-                class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center"
-                *ngIf="isNotionLoggedIn">
-                <span class="text-white">✔</span>
-              </span>
-              <span *ngIf="!isNotionLoggedIn || !isLogin"
-                class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
-            </span>
-          </li>
-          <li *ngIf="isNotionLoggedIn && isLogin">
-            <p class="font-medium pt-4 p-4">You are ready to go</p>
-          </li>
-          <li *ngIf="!isLogin">
-            Login with google
-          </li>
-          <li *ngIf="!isNotionLoggedIn && isLogin">
-            Login with notion
-          </li>
+                  <div class="flex flex-row gap-4 mt-6">
+                      <div class="">
+                          <button type="button" *ngIf="!isLogin" (click)="signInWithGoogle()"
+                              class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600">
+                              Login With Google
+                          </button>
+                      </div>
+                      <div class="">
+                          <a type="button" *ngIf="!isNotionLoggedIn && isLogin" [href]="connectToNotion()"
+                              class="shadow-sm text-gray-900 bg-[#fff] hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500">
+                              Connect To Notion
+                      </a>
+                      </div>
+                      <div *ngIf="isNotionLoggedIn && isLogin" class="">
+                        <a [attr.disabled]="!isNotionLoggedIn || !isLogin ? true : null" href="https://www.linkedin.com/" target="_blank"
+                            class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600">
+                            Open Linkedin
+                      </a>
+                    </div>
+                    <div *ngIf="isNotionLoggedIn && isLogin" class="">
+                        <a [attr.disabled]="!isNotionLoggedIn || !isLogin ? true : null" href="https://www.notion.so/"
+                        target="_blank"
+                            class="shadow-sm text-gray-900 bg-[#fff] hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500">
+                            Open Notion
+                    </a>
+                    </div>
 
-        </ol>
-        <div *ngIf="isNotionLoggedIn && isLogin" class="flex mx-auto items-center justify-center  pt-6 p-4 ">
-          <li class="flex flex-row p-4">
-            <a [attr.disabled]="!isNotionLoggedIn || !isLogin ? true : null" href="https://www.linkedin.com/"
-              target="_blank"
-              class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
-              Open Linkedin
-            </a>
+                  </div>
+              </div>
 
-            <a [attr.disabled]="!isNotionLoggedIn || !isLogin ? true : null" href="https://www.notion.so/"
-              target="_blank"
-              class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-              Open Notion
-            </a>
-          </li>
+              <div class="col-span-12 md:col-span-4 lg:col-span-5">
 
-
-        </div>
-
-
-
-
-
-
-
-      </div>
-      <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 hidden md:block">
-        <img class="object-cover object-center rounded" alt="hero"
-          src="https://e0.pxfuel.com/wallpapers/90/1010/desktop-wallpaper-how-to-reverse-engineer-who-s-viewed-your-profile-on-linkedin-to-linkedin-business.jpg">
-      </div>
-    </div>
+              </div>
+          </div>
+      </div><!--end container-->
+      
   </section>
+
 
   <!-- <footer class="container mx-auto mt-auto bg-white rounded-lg shadow m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
@@ -163,4 +140,18 @@
     </svg>
     <span class="text-4xl font-medium text-gray-500">Loading...</span>
   </div>
+</div>
+
+<div class="bg-[#d7d8d969]">
+  <!-- <div class="animated-background-wrap">
+      <div class="shape shape1"></div>
+      <div class="shape shape2"></div>
+      <div class="shape shape3"></div>
+      <div class="shape shape4"></div>
+  </div> -->
+
+
+
+
+ 
 </div>

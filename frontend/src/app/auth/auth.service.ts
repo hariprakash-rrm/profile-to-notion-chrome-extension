@@ -35,7 +35,6 @@ export class AuthService {
      
       const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' })
 
-      console.log({ data, error })
       return true
       
     } catch (error) {
@@ -59,9 +58,6 @@ export class AuthService {
 
     const { error }: any = supabase.auth.signOut().then((res: any) => {
       this.setLoginStatus(false)
-      console.log(res)
     })
-    console.log(error)
-
   }
 }

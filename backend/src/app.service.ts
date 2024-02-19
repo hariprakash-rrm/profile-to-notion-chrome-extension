@@ -413,7 +413,6 @@ export class AppService {
         .select().eq('user_id', user_id)
       if (data) {
         secret = data[0].secret
-        console.log(secret)
         return await this.createNotion(secret, _data.data)
       } else {
         throw new NotAcceptableException(Error)

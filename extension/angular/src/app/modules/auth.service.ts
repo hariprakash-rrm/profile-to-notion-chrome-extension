@@ -74,11 +74,7 @@ export class AuthService {
 
         });
 
-        console.log(data, error);
-
         if (data) {
-          // Successful authenticatio
-
           if (this.localData && this.localData.access_token) {
 
             // Set login status and perform additional actions if needed
@@ -86,14 +82,11 @@ export class AuthService {
             this.route.queryParams.subscribe(params => {
               // Access and log the 'code' parameter
               let codeParam = params['code'] ? params['code'] : null;
-              console.log('Code parameter:', codeParam);
               if (codeParam) {
                 this.addNotionTokenToSupabase();
               }
             });
-
           }
-
           this.setLoginStatus(true);
           return true;
         } else {
@@ -101,11 +94,9 @@ export class AuthService {
           localStorage.clear();
           this.setLoginStatus(false);
           this.setLoadingStatus(false)
-
           return false;
         }
       }
-
     } catch (error) {
       this.setLoadingStatus(false)
       console.error('Error during OAuth2 authentication:', error);
@@ -115,7 +106,6 @@ export class AuthService {
 
   async getNotionCode() {
     let postData = this.getPostData()
-    console.log(postData)
 
     this.http.post(`${environment.base_url}code`, postData).subscribe((res: any) => {
       if (res) {
@@ -132,12 +122,9 @@ export class AuthService {
       let postData = this.getPostData()
       chrome.storage.local.set
       this.http.post(`${environment.base_url}add-google-token-to-supabase`, postData).subscribe((res: any) => {
-        console.log(res)
         chrome.storage.local.set({ gAuth: postData.token }).then(() => {
-          console.log("Value is set", postData.token);
         });
         chrome.storage.local.set({ user_id: postData.user_id }).then(() => {
-          console.log("Value is set", postData.user_id);
         });
 
         this.setLoginStatus(true);
@@ -156,7 +143,6 @@ export class AuthService {
 
       let postData = this.getPostData()
       this.http.post(`${environment.base_url}add-notion-token-to-supabase`, postData).subscribe((res: any) => {
-        console.log(res)
         if (res.data[0].code != "" || res.data[0].code == null) {
 
         }
@@ -178,7 +164,6 @@ export class AuthService {
     this.route.queryParams.subscribe(params => {
       // Access and log the 'code' parameter
       codeParam = params['code'];
-      console.log('Code parameter:', codeParam);
     });
     localStorage.setItem('code', codeParam)
     let postData = {
@@ -212,16 +197,7 @@ export class AuthService {
   signout(): void {
     const { error }: any = supabase.auth.signOut().then((res: any) => {
       this.setLoginStatus(false)
-      console.log(res)
       window.location.reload()
     })
-    console.log(error)
-    // chrome.storage.local.remove(["gAUth","user_id"],function(){
-    //   var error = chrome.runtime.lastError;
-    //      if (error) {
-    //          console.error(error);
-    //      }
-    //  })
-
   }
 }

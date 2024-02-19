@@ -8,7 +8,6 @@ export class AppController {
   @Post('/add-google-token-to-supabase')
   async saveGoogleToken(@Body() data: any) {
     try {
-      console.log('data = data', data);
       const response = await this.appService.addGoogleTokenToSupabase(data);
 
       if (response.error) {
