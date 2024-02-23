@@ -64,6 +64,10 @@ export class OptionsComponent implements OnInit {
 		return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
 	}
 
+  getNotionCode(){
+    this.authService.getNotionCode()
+  }
+
 }
 
 

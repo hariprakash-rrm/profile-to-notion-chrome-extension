@@ -88,6 +88,7 @@ export class AuthService {
             });
           }
           this.setLoginStatus(true);
+
           return true;
         } else {
           // Clear local storage and set login status to false
@@ -105,13 +106,27 @@ export class AuthService {
   }
 
   async getNotionCode() {
+    this.setLoadingStatus(true)
     let postData = this.getPostData()
 
     this.http.post(`${environment.base_url}code`, postData).subscribe((res: any) => {
-      if (res) {
-        this.isNotionLoginSubject.next(true)
+      console.log(res)
+      this.route.queryParams.subscribe(params => {
+        // Access and log the 'code' parameter
+        let codeParam = params['code'] ? params['code'] : null;
+        if (codeParam) {
+          this.isNotionLoginSubject.next(true)
+        } else {
+          if (res.data.length == 0) {
+            alert('No notion found continue with new')
+          }
+          else {
 
-      }
+            this.isNotionLoginSubject.next(true)
+          }
+        }
+      });
+
       this.setLoadingStatus(false)
     })
   }
@@ -165,6 +180,11 @@ export class AuthService {
       // Access and log the 'code' parameter
       codeParam = params['code'];
     });
+    this.localData = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+
+    if (this.localData) {
+      this.localData = JSON.parse(this.localData)
+    }
     localStorage.setItem('code', codeParam)
     let postData = {
       token: this.localData.access_token,
