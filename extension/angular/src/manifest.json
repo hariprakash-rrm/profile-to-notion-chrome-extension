@@ -3,15 +3,14 @@
   "name": "ProfileToNotion",
   "short_name": "pTn",
   "version": "1.0.0",
-  "description": "Generated with @larscom/ng-chrome-extension",
+  "description": "A tool for a perefect lead",
   "icons": {
-    "48": "assets/logo.jpeg",
-    "96": "assets/logo.jpeg",
-    "144": "assets/logo.jpeg",
-    "192": "assets/logo.jpeg"
+    "48": "./assets/icon.png",
+    "96":  "./assets/icon.png",
+    "144":  "./assets/icon.png",
+    "192":  "./assets/icon.png"
   },
 
-  
   "permissions": [
     "tabs",
     "storage",
@@ -28,8 +27,8 @@
     "default_popup": "index.html?#/popup",
     "default_title": "Profile To Notion Extension",
     "default_icon": {
-      "16": "assets/logo.jpeg",
-      "32": "assets/logo.jpeg"
+      "16":  "./assets/icon.png",
+      "32":  "./assets/icon.png"
     }
   },
   "options_page": "index.html",
