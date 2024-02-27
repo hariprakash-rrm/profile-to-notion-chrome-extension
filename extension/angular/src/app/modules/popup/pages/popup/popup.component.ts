@@ -2,6 +2,7 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 
 import { TAB_ID } from '../../../../providers/tab-id.provider';
 import { AuthService } from 'src/app/modules/auth.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-popup',
   templateUrl: 'popup.component.html',
@@ -54,7 +55,7 @@ export class PopupComponent implements OnInit {
     }
   
     connectToNotion(): string {
-      const oauthClientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a'; // Replace with your actual OAuth client ID
+      const oauthClientId = environment.oauthClientId; // Replace with your actual OAuth client ID
       return `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
     }
 

@@ -1,5 +1,5 @@
 
-
+const apiUrl = "https://notion-backend-cvzk.onrender.com";
 chrome.commands.onCommand.addListener(function(command) {
   if (command === "toggle-feature") {
     sendMessageToContentScript();
@@ -49,7 +49,7 @@ function handleTabUpdate(tabId, changeInfo, tab) {
   }
   if (changeInfo.url) {
 
-    if (changeInfo.url.includes("http://localhost:4200/?code=")) {
+    if (changeInfo.url.includes("https://profiletonotion.app/?code=")) {
 
       const codeParam = new URL(changeInfo.url).searchParams.get("code");
 
@@ -109,6 +109,16 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
   });
   // Build the extension URL with the 'code' parameter
+  const response =  fetch(`${apiUrl}/extenion`, {
+    method: "GET", // or 'PUT', 'DELETE', etc.
+    headers: {
+      "Content-Type": "application/json",
+      // Add any other headers if needed
+    },
+   
+  });
+
+  console.log(response)
   const extensionURL = `chrome-extension://efddgiiofffihbdmioelhlmckdidacpj/index.html#/`;
 
   // Open the extension URL in a new tab
@@ -117,10 +127,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
 async function createDbInNotion(_data) {
 
-  const apiUrl = "https://notion-backend-cvzk.onrender.com/add-data";
-
   try {
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${apiUrl}/add-data`, {
       method: "POST", // or 'PUT', 'DELETE', etc.
       headers: {
         "Content-Type": "application/json",

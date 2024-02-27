@@ -1,9 +1,10 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, Post, UnauthorizedException } from '@nestjs/common';
 import { AppService } from './app.service';
+import { get } from 'http';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Post('/add-google-token-to-supabase')
   async saveGoogleToken(@Body() data: any) {
@@ -53,6 +54,17 @@ export class AppController {
       return this.appService.getUserData(data);
     } catch (error) {
       console.error('Error in addDataToNotion:', error);
+      throw new UnauthorizedException(`Internal server error: ${error.message}`);
+    }
+  }
+
+  @Get('/extenion')
+  getExtensionId(): Promise<any> {
+
+    try {
+      return this.appService.getExtensionId()
+    } catch (error) {
+      console.error('Error in getCodeDetails:', error);
       throw new UnauthorizedException(`Internal server error: ${error.message}`);
     }
   }

@@ -171,20 +171,10 @@ export class AppService {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
   async fetchNotionToken(code: string, _data: any) {
     try {
-      const clientId = '4c51dd4c-9b93-4b80-a0b2-4d107b8e0a0a';
-      const clientSecret = 'secret_SUgFeT54seyZ7JoNtYseKbFi403AKTtpnMFN5T7dnu6';
+      const clientId = env.clientId;
+      const clientSecret = env.secretKey;
 
       const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
@@ -421,6 +411,10 @@ export class AppService {
     } catch (error) {
       throw new NotAcceptableException(Error)
     }
+  }
+
+  async getExtensionId(): Promise<any> {
+    return env.extensonId
   }
 }
 
