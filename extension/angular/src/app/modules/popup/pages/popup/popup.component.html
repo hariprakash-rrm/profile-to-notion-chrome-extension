@@ -6,17 +6,13 @@
     <div class="px-4">
         <div class="flex items-center justify-between">
             <div class="flex shrink-0">
-                <a aria-current="page" class="flex items-center" href="/">
+                <a aria-current="page" class="flex items-center" >
                     <img class="h-7 w-auto" src="../../../../../assets/logo.jpeg" alt="">
-                    <p class="sr-only">Website Title</p>
+                  
                 </a>
             </div>
             <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
-                <a aria-current="page"
-                    class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                    href="#">How it works</a>
-                <a class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                    href="#">Pricing</a>
+              
             </div>
             <div *ngIf="isLogin && isNotionLoggedIn" (click)="signout()" class="flex items-center justify-end gap-3">
                 
