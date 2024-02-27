@@ -3,7 +3,7 @@
   "name": "ProfileToNotion",
   "short_name": "pTn",
   "version": "1.0.0",
-  "description": "A tool for a perefect lead",
+  "description": "A tool for a perfect lead",
   "icons": {
     "48": "./assets/icon.png",
     "96":  "./assets/icon.png",
