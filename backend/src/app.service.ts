@@ -418,7 +418,7 @@ export class AppService {
   }
 
   async getStorageId():Promise<any>{
-    return env.storageId
+    return {data:env.storageId}
    }
 }
 
