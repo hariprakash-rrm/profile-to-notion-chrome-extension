@@ -26,60 +26,63 @@
 <section class="w-full font-sans pb-8">
   <div class="  flex px-5 py-24 md:flex-row flex-col items-center h-screen">
     <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-      <div id="two" class="bg-transparent">
+      <div id="two" class="bg-transparent h-[70px]">
         <div class="box ">
             <ul>
                 <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
                     Cutdown Lead Generation Times in Half</li>
                 <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
                     You lead generation copilot</li>
                 <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
                     Bring Online Profiles to Notion</li>
                 <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
+                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
                     Build Notion Databases with a click</li>
             </ul>
         </div>
-    </div>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start
-       w-full">
-        <button *ngIf="!isLogin"         (click)="createTab()"class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button>
-        <a *ngIf="!isNotionLoggedIn && isLogin"         (click)="createTab()" class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</a>
+      </div>
+      <p class="text-[#6e6e73] text-sm  max-w-xl">A plugin anyone can use to import any online profile to your Notion database. Eliminate mundane data entry tasks with a few clicks. Built for small teams to run businesses at scale. </p>
+      <div class="flex gap-4 justify-center items-center w-full mt-16">
+
+        <button *ngIf="!isLogin" (click)="createTab()"  type="button" class="w-full sm:w-auto text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600"> Login With Google </button>
+
+        <!-- <button *ngIf="!isLogin"         (click)="createTab()"class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button> -->
+        <a  *ngIf="!isNotionLoggedIn && isLogin" (click)="createTab()" class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</a>
       </div>
       
 
-      <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
+      <!-- <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"> -->
         <!-- completed state -->
-        <li class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+        <!-- <li class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
           <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
             <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isLogin">
               <span class="text-white">✔</span>
             </span>
             <span *ngIf="!isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
           </span>
-        </li>
+        </li> -->
         <!-- current state -->
-        <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+        <!-- <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
           <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
             <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isNotionLoggedIn">
               <span class="text-white">✔</span>
             </span>
             <span *ngIf="!isNotionLoggedIn || !isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
           </span>
-        </li>
-        <li *ngIf="isNotionLoggedIn && isLogin">
+        </li> -->
+        <!-- <li *ngIf="isNotionLoggedIn && isLogin">
           You are ready to go
         </li>
         <li *ngIf="!isLogin">
          Login with google
-        </li>
-        <li *ngIf="!isNotionLoggedIn && isLogin">
+        </li> -->
+        <!-- <li *ngIf="!isNotionLoggedIn && isLogin">
           Login with notion
-        </li>
-      </ol>
+        </li> -->
+      <!-- </ol> -->
       
       
       
