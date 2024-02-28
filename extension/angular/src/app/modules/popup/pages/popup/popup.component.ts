@@ -14,7 +14,7 @@ export class PopupComponent implements OnInit {
   isLoginObservable: any;
   loading: boolean = true;
   isNotionLoggedIn = false
-  extensionBasePath = "https://notion-backend-cvzk.onrender.com/";
+  extensionBasePath = "https://dev2-3b48.onrender.com/";
 
   constructor(@Inject(TAB_ID) readonly tabId: number, private authService: AuthService) { }
 

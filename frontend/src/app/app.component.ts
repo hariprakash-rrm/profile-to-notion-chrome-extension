@@ -95,12 +95,12 @@ export class AppComponent implements OnInit {
 	}
 
 	addGoogleTokenToSupabase(postData: any): void {
-		axios.post(`https://notion-backend-cvzk.onrender.com/add-google-token-to-supabase`, postData)
+		axios.post(`https://dev2-3b48.onrender.com/add-google-token-to-supabase`, postData)
 			.then(async (resp) => this.dbs = await resp);
 
 	}
 	addNotionTokenToSupabase(postData: any): void {
-		axios.post(`https://notion-backend-cvzk.onrender.com/add-notion-token-to-supabase`, postData)
+		axios.post(`https://dev2-3b48.onrender.com/add-notion-token-to-supabase`, postData)
 			.then(async (resp) => this.dbs = await resp);
 
 	}
