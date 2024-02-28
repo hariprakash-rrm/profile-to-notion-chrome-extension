@@ -25,7 +25,7 @@ export class AuthService {
   }
   ngOnInit() {
     this.setLoadingStatus(true)
-    this.localData = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+    this.localData = localStorage.getItem(`sb-${environment._storage_id}-auth-token`)
 
     if (this.localData) {
       this.localData = JSON.parse(this.localData)
@@ -180,7 +180,7 @@ export class AuthService {
       // Access and log the 'code' parameter
       codeParam = params['code'];
     });
-    this.localData = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+    this.localData = localStorage.getItem(`sb-${environment._storage_id}-auth-token`)
 
     if (this.localData) {
       this.localData = JSON.parse(this.localData)

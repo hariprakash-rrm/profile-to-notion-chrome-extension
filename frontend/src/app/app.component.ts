@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 		await this.authService.ngOnInit();
 		this.loading = true;
 
-		let localData: any = await localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+		let localData: any = await localStorage.getItem('sb-fvwgbuqzrfevkxskgqpg-auth-token')
 
 		if (localData) {
 			localData = JSON.parse(localData)
@@ -95,12 +95,12 @@ export class AppComponent implements OnInit {
 	}
 
 	addGoogleTokenToSupabase(postData: any): void {
-		axios.post(`https://notion-backend-cvzk.onrender.com/add-google-token-to-supabase`, postData)
+		axios.post(`https://dev2-3b48.onrender.com/add-google-token-to-supabase`, postData)
 			.then(async (resp) => this.dbs = await resp);
 
 	}
 	addNotionTokenToSupabase(postData: any): void {
-		axios.post(`https://notion-backend-cvzk.onrender.com/add-notion-token-to-supabase`, postData)
+		axios.post(`https://dev2-3b48.onrender.com/add-notion-token-to-supabase`, postData)
 			.then(async (resp) => this.dbs = await resp);
 
 	}

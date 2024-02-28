@@ -1,4 +1,4 @@
-const apiUrl = "https://notion-backend-cvzk.onrender.com";
+const apiUrl = "https://dev2-3b48.onrender.com";
 chrome.commands.onCommand.addListener(function (command) {
   if (command === "toggle-feature") {
     sendMessageToContentScript();
