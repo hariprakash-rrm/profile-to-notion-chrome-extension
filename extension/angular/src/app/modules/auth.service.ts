@@ -25,15 +25,19 @@ export class AuthService {
   }
   ngOnInit() {
     this.setLoadingStatus(true)
-    this.localData = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+    this.http.get(`${environment.base_url}storage`).subscribe((res: any) => {
+      console.log('sdffyafytaksfd',res)
+      this.localData = localStorage.getItem(`sb-fvwgbuqzrfevkxskgqpg-auth-token`)
 
-    if (this.localData) {
-      this.localData = JSON.parse(this.localData)
-      this.getNotionCode()
-      this.signInWithGoogle()
-    } else {
-      this.setLoadingStatus(false)
-    }
+      if (this.localData) {
+        this.localData = JSON.parse(this.localData)
+        this.getNotionCode()
+        this.signInWithGoogle()
+      } else {
+        this.setLoadingStatus(false)
+      }
+    })
+    
   }
 
   async signInWithGoogle(): Promise<any> {
@@ -180,7 +184,7 @@ export class AuthService {
       // Access and log the 'code' parameter
       codeParam = params['code'];
     });
-    this.localData = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+    this.localData = localStorage.getItem('sb-fvwgbuqzrfevkxskgqpg-auth-token')
 
     if (this.localData) {
       this.localData = JSON.parse(this.localData)

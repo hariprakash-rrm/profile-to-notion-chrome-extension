@@ -17,7 +17,7 @@ export class AuthService {
 
   }
   ngOnInit() {
-    let localData: any = localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+    let localData: any = localStorage.getItem('sb-fvwgbuqzrfevkxskgqpg-auth-token')
     
     if (localData) {
       localData = JSON.parse(localData)

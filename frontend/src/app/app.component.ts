@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 		await this.authService.ngOnInit();
 		this.loading = true;
 
-		let localData: any = await localStorage.getItem('sb-qgkhqqydyzaxeqyskhrq-auth-token')
+		let localData: any = await localStorage.getItem('sb-fvwgbuqzrfevkxskgqpg-auth-token')
 
 		if (localData) {
 			localData = JSON.parse(localData)

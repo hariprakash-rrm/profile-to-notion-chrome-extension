@@ -68,4 +68,15 @@ export class AppController {
       throw new UnauthorizedException(`Internal server error: ${error.message}`);
     }
   }
+
+  @Get('/storage')
+  getStorageId(): Promise<any> {
+
+    try {
+      return this.appService.getStorageId()
+    } catch (error) {
+      console.error('Error in getCodeDetails:', error);
+      throw new UnauthorizedException(`Internal server error: ${error.message}`);
+    }
+  }
 }

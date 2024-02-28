@@ -416,5 +416,9 @@ export class AppService {
   async getExtensionId(): Promise<any> {
     return env.extensonId
   }
+
+  async getStorageId():Promise<any>{
+    return env.storageId
+   }
 }
 
