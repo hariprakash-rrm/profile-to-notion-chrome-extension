@@ -4,7 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-const supabase = createClient(environment.supabase.url, environment.supabase.key);
+const supabase = createClient(environment.supabase.url, environment.supabase.key, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true
+  }
+});
 @Injectable({
   providedIn: 'root'
 })
@@ -43,6 +48,16 @@ export class AuthService {
 
   async initiateOAuth2(): Promise<boolean> {
     try {
+      const { data, error } = await supabase.auth.refreshSession()
+      const { session, user } = data
+      console.log(session, user)
+
+      if (session && user) {
+        this.setLoginStatus(true);
+        console.log('not')
+        return true;
+      }
+console.log('called')
       const manifest = chrome.runtime.getManifest();
       const authUrl = new URL('https://accounts.google.com/o/oauth2/auth');
 
