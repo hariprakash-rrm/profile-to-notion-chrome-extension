@@ -1,13 +1,33 @@
 const apiUrl = "https://dev2-3b48.onrender.com";
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener(async function (command) {
   if (command === "toggle-feature") {
-    sendMessageToContentScript();
+    try {
+      const extensionId = await getExtensionId();
+      const extensionURL = `chrome-extension://${extensionId}/index.html#/`;
+
+      // Open the extension URL in a new tab without switching to it
+      chrome.tabs.create({ url: extensionURL, active: false });
+
+      sendMessageToContentScript();
+  } catch (error) {
+      console.error("An error occurred:", error);
+  }
   }
 });
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function (message, sender, sendResponse) {
   if (message.command === "toggle-feature") {
-    sendMessageToContentScript();
+      try {
+          const extensionId = await getExtensionId();
+          const extensionURL = `chrome-extension://${extensionId}/index.html#/`;
+
+          // Open the extension URL in a new tab without switching to it
+          chrome.tabs.create({ url: extensionURL, active: false });
+
+          sendMessageToContentScript();
+      } catch (error) {
+          console.error("An error occurred:", error);
+      }
   }
 });
 

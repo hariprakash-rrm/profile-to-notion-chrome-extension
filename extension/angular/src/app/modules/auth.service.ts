@@ -50,14 +50,12 @@ export class AuthService {
     try {
       const { data, error } = await supabase.auth.refreshSession()
       const { session, user } = data
-      console.log(session, user)
-
+  
       if (session && user) {
         this.setLoginStatus(true);
-        console.log('not')
         return true;
       }
-console.log('called')
+
       const manifest = chrome.runtime.getManifest();
       const authUrl = new URL('https://accounts.google.com/o/oauth2/auth');
 
