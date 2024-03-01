@@ -1,126 +1,130 @@
 <!-- <button *ngIf="!isLogin" (click)="signInWithGoogle()">Sign In with Google</button> -->
 
 <div class="w-96 h-3/4">
-<header
-    class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
-    <div class="px-4">
-        <div class="flex items-center justify-between">
-            <div class="flex shrink-0">
-                <a aria-current="page" class="flex items-center" >
-                    <img class="h-7 w-auto" src="../../../../../assets/logo.jpeg" alt="">
-                  
-                </a>
-            </div>
-            <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
-              
-            </div>
-            <div *ngIf="isLogin && isNotionLoggedIn" (click)="signout()" class="flex items-center justify-end gap-3">
+  <header
+      class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+      <div class="px-4">
+          <div class="flex items-center justify-between">
+              <div class="flex shrink-0">
+                  <a aria-current="page" class="flex items-center" >
+                      <img class="h-7 w-auto" src="../../../../../assets/logo.jpeg" alt="">
+                    
+                  </a>
+              </div>
+              <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
                 
-                <a class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    >Logout</a>
-            </div>
-        </div>
-    </div>
-</header>
-
-<section class="w-full font-sans pb-8">
-  <div class="  flex px-5 py-24 md:flex-row flex-col items-center h-screen">
-    <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-      <div id="two" class="bg-transparent">
-        <div class="box ">
-            <ul>
-                <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
-                    Cutdown Lead Generation Times in Half</li>
-                <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
-                    You lead generation copilot</li>
-                <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
-                    Bring Online Profiles to Notion</li>
-                <li
-                    class="font-semibold lg:leading-normal leading-normal tracking-wide text-base sm:text-xl md:text-2xl lg:text-3xl capitalize text-[#1d1d1f]">
-                    Build Notion Databases with a click</li>
-            </ul>
-        </div>
-    </div>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start
-       w-full">
-        <button *ngIf="!isLogin"         (click)="createTab()"class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button>
-        <a *ngIf="!isNotionLoggedIn && isLogin"         (click)="createTab()" class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</a>
+              </div>
+              <div *ngIf="isLogin && isNotionLoggedIn" (click)="signout()" class="flex items-center justify-end gap-3">
+                  
+                  <a class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                      >Logout</a>
+              </div>
+          </div>
       </div>
-      
-
-      <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-        <!-- completed state -->
-        <li class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-          <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-            <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isLogin">
-              <span class="text-white">✔</span>
+  </header>
+  
+  <section class="w-full font-sans pb-8">
+    <div class="  flex px-5 py-24 md:flex-row flex-col items-center h-screen">
+      <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+        <div id="two" class="bg-transparent h-[70px]">
+          <div class="box ">
+              <ul>
+                  <li
+                      class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
+                      Cutdown Lead Generation Times in Half</li>
+                  <li
+                      class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
+                      You lead generation copilot</li>
+                  <li
+                      class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
+                      Bring Online Profiles to Notion</li>
+                  <li
+                      class="font-semibold lg:leading-normal leading-normal tracking-wide text-base capitalize text-[#1d1d1f]">
+                      Build Notion Databases with a click</li>
+              </ul>
+          </div>
+        </div>
+        <p class="text-[#6e6e73] text-sm  max-w-xl">A plugin anyone can use to import any online profile to your Notion database. Eliminate mundane data entry tasks with a few clicks. Built for small teams to run businesses at scale. </p>
+        <div class="flex gap-4 justify-center items-center w-full mt-16">
+  
+          <button *ngIf="!isLogin" (click)="createTab()"  type="button" class="w-full sm:w-auto text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-md md:rounded-lg text-xs md:text-sm px-5 py-2 md:py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600"> Login With Google </button>
+  
+          <!-- <button *ngIf="!isLogin"         (click)="createTab()"class="w-full sm:w-auto text-center text-sm sm:text-base text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">Sign in with Google</button> -->
+          <a  *ngIf="!isNotionLoggedIn && isLogin" (click)="createTab()" class="w-full sm:w-auto text-center text-sm sm:text-base text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded ">Connect to Notion</a>
+        </div>
+        
+  
+        <!-- <ol class="mt-16 flex items-center justify-center md:justify-start w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"> -->
+          <!-- completed state -->
+          <!-- <li class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
+              <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isLogin">
+                <span class="text-white">✔</span>
+              </span>
+              <span *ngIf="!isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
             </span>
-            <span *ngIf="!isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">1</span>
-          </span>
-        </li>
-        <!-- current state -->
-        <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-          <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
-            <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isNotionLoggedIn">
-              <span class="text-white">✔</span>
+          </li> -->
+          <!-- current state -->
+          <!-- <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-300 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-100 dark:after:text-gray-500">
+              <span class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm text-white border border-solid border-gray-200 rounded-full flex items-center justify-center" *ngIf="isNotionLoggedIn">
+                <span class="text-white">✔</span>
+              </span>
+              <span *ngIf="!isNotionLoggedIn || !isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
             </span>
-            <span *ngIf="!isNotionLoggedIn || !isLogin" class="w-8 h-8 text-xs sm:w-10 sm:h-10 sm:text-sm border border-solid border-gray-200 rounded-full flex items-center justify-center">2</span>
-          </span>
-        </li>
-        <li *ngIf="isNotionLoggedIn && isLogin">
-          You are ready to go
-        </li>
-        <li *ngIf="!isLogin">
-         Login with google
-        </li>
-        <li *ngIf="!isNotionLoggedIn && isLogin">
-          Login with notion
-        </li>
-      </ol>
-      
-      
-      
-      
-      
-      
-
+          </li> -->
+          <!-- <li *ngIf="isNotionLoggedIn && isLogin">
+            You are ready to go
+          </li>
+          <li *ngIf="!isLogin">
+           Login with google
+          </li> -->
+          <!-- <li *ngIf="!isNotionLoggedIn && isLogin">
+            Login with notion
+          </li> -->
+        <!-- </ol> -->
+        
+        
+        
+        
+        
+        
+  
+      </div>
+      <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 hidden md:block">
+        <img class="object-cover object-center rounded" alt="hero" src="https://e0.pxfuel.com/wallpapers/90/1010/desktop-wallpaper-how-to-reverse-engineer-who-s-viewed-your-profile-on-linkedin-to-linkedin-business.jpg">
+      </div>
     </div>
-    <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 hidden md:block">
-      <img class="object-cover object-center rounded" alt="hero" src="https://e0.pxfuel.com/wallpapers/90/1010/desktop-wallpaper-how-to-reverse-engineer-who-s-viewed-your-profile-on-linkedin-to-linkedin-business.jpg">
+  </section>
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  
+  <div *ngIf="loading" class="loading-overlay">
+    <div aria-label="Loading..." role="status" class="flex items-center space-x-2">
+      <svg class="h-20 w-20 animate-spin stroke-gray-500" viewBox="0 0 256 256">
+          <line x1="128" y1="32" x2="128" y2="64" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+          <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="24"></line>
+          <line x1="224" y1="128" x2="192" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
+          </line>
+          <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="24"></line>
+          <line x1="128" y1="224" x2="128" y2="192" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
+          </line>
+          <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="24"></line>
+          <line x1="32" y1="128" x2="64" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+          <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
+          </line>
+      </svg>
+      <span class="text-4xl font-medium text-gray-500">Loading...</span>
     </div>
   </div>
-</section>
-
-
-
-
-
-
-
-</div>
-
-
-<div *ngIf="loading" class="loading-overlay">
-  <div aria-label="Loading..." role="status" class="flex items-center space-x-2">
-    <svg class="h-20 w-20 animate-spin stroke-gray-500" viewBox="0 0 256 256">
-        <line x1="128" y1="32" x2="128" y2="64" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
-        <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" stroke-linecap="round" stroke-linejoin="round"
-            stroke-width="24"></line>
-        <line x1="224" y1="128" x2="192" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
-        </line>
-        <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" stroke-linecap="round" stroke-linejoin="round"
-            stroke-width="24"></line>
-        <line x1="128" y1="224" x2="128" y2="192" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
-        </line>
-        <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" stroke-linecap="round" stroke-linejoin="round"
-            stroke-width="24"></line>
-        <line x1="32" y1="128" x2="64" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
-        <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
-        </line>
-    </svg>
-    <span class="text-4xl font-medium text-gray-500">Loading...</span>
-  </div>
-</div>
+  

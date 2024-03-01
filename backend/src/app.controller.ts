@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, UnauthorizedException } from '@nestjs/common';
 import { AppService } from './app.service';
 import { get } from 'http';
+import { Cron } from '@nestjs/schedule';
+import axios from 'axios';
 
 @Controller()
 export class AppController {
@@ -77,6 +79,15 @@ export class AppController {
     } catch (error) {
       console.error('Error in getCodeDetails:', error);
       throw new UnauthorizedException(`Internal server error: ${error.message}`);
+    }
+  }
+
+  @Cron('0 */10 * * * *') // Cron expression for every 10 minutes
+  async pingKeepAliveEndpoint() {
+    try {
+      await axios.get('https://notion-backend-cvzk.onrender.com/extension');
+    } catch (error) {
+      console.error('Error pinging keep-alive endpoint:', error);
     }
   }
 }
